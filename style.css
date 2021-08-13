@@ -14,6 +14,7 @@ li{
 
 body{
     --bg-color: #fffefe;
+    --chat-bg:#f7f8ff;
     --text-color: #000;
     --interest-hover:#6d85fa;
     --text-hover: #fff;
@@ -23,8 +24,9 @@ body{
 
 body.dark-mode{ /*overides the light theme*/
     --bg-color: #332d43;
+    --chat-bg: rgba(60,54,78,255);
     --text-color: #fff;
-    --interest-hover:rgba(60,54,78,255);
+    --interest-hover: var(--chat-bg);
     --svg-color: #fff;
     --menu-color:#6d85fa;
 }
@@ -138,13 +140,11 @@ section.interest div.channels div h4{
     letter-spacing: 0.1em;
 }
 
-
 /* mobile style */
-
 div.burger-menu{
     display: block;
     position: fixed;
-    bottom: 30px;
+    bottom: 0;
     right: 30px;
     height: auto;
     z-index: 10;
@@ -226,12 +226,49 @@ div.burger-menu{
 .content {
     position: fixed;
     left: 10px;
-    bottom: 30px;
+    bottom: 0;
     z-index: 9;
 }
 
 section.interest {
-    z-index: 8;
+    -webkit-transition: all .25s ease-in-out;
+    -moz-transition: all .25s ease-in-out;
+    -o-transition: all .25s ease-in-out;
+    transition: all .25s ease-in-out;
+    display: grid;
+    grid-auto-rows: .5fr 1.5fr;
+    position: fixed;
+    width: 100%; 
+    height: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--bg-color);
+    opacity:0;
+    color: var(--text-color);
+    z-index: -12;
+    cursor: pointer;
+}
+
+section.interest.show{
+    height: 100%;
+    opacity: .75;
+    z-index: 9;
+}
+
+
+section.interest h2.title{
+    margin-top: 50px;
+}
+
+section.chat-area{
+    height: 75vh;
+}
+
+div.container.main-chat-area{
+    height: 100%;
+    background: var(--chat-bg);
 }
 
 
@@ -242,11 +279,20 @@ section.interest {
 
 /* Medium devices (desktops, 992px and up) */
 @media only screen and (min-width: 992px) { 
+
     .content {
         position: relative;
     }
     div.burger-menu{
         display: none;
+    }
+
+    section.interest{
+        display: grid;
+        position: relative;
+        height: 100%;
+        opacity: .75;
+        z-index: 9;
     }
 }
 

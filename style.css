@@ -26,7 +26,7 @@ body.dark-mode{ /*overides the light theme*/
     --text-color: #fff;
     --interest-hover:rgba(60,54,78,255);
     --svg-color: #fff;
-      --menu-color:#6d85fa;
+    --menu-color:#6d85fa;
 }
 
 /* base */

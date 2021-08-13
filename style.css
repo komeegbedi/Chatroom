@@ -46,28 +46,7 @@ main{
     margin-top: 50px;
 }
 
-section.interest div.channels div{
-    display: flex;
-    cursor: pointer;
-    padding: 2em;
-    border-bottom: 1.5px solid #ccc;
-    border-radius: 10px;
-}
-
-
-section.interest div.channels div:hover{
-    background: var(--interest-hover);
-    color: var(--text-hover);
-}
-
-
-section.interest div.channels div h4{
-    margin-left: 20px;
-    font-size: 0.9em;
-    font-weight: 500;
-    letter-spacing: 0.1em;
-}
- .content {
+.content {
     display: flex;
     flex-direction: column;
     margin: auto;
@@ -116,23 +95,47 @@ label {
     justify-content: space-between;
     user-select: none;
 }
+
 .dark {
     opacity: .5;
 }
 
 [type="checkbox"] {
-        display: none;
+    display: none;
 }
 
-[type="checkbox"]:checked + .app .toggle{
+[type="checkbox"]:checked + div.content .toggle{
     transform: translateX(100%);
     background-color: #26242E;
 }
-[type="checkbox"]:checked + .app .dark{
+[type="checkbox"]:checked + div.dark{
         opacity: 1;
 }
-[type="checkbox"]:checked + .app .light{
+[type="checkbox"]:checked + div.light{
     opacity: .5;
+}
+
+
+section.interest div.channels div{
+    display: flex;
+    cursor: pointer;
+    padding: 2em;
+    border-bottom: 1.5px solid #ccc;
+    border-radius: 10px;
+}
+
+
+section.interest div.channels div:hover{
+    background: var(--interest-hover);
+    color: var(--text-hover);
+}
+
+
+section.interest div.channels div h4{
+    margin-left: 20px;
+    font-size: 0.9em;
+    font-weight: 500;
+    letter-spacing: 0.1em;
 }
 
 
@@ -220,7 +223,14 @@ div.burger-menu{
     left: 50%;
 }
 
-section.interest{
+.content {
+    position: fixed;
+    left: 10px;
+    bottom: 30px;
+    z-index: 9;
+}
+
+section.interest {
     z-index: 8;
 }
 
@@ -232,7 +242,12 @@ section.interest{
 
 /* Medium devices (desktops, 992px and up) */
 @media only screen and (min-width: 992px) { 
-
+    .content {
+        position: relative;
+    }
+    div.burger-menu{
+        display: none;
+    }
 }
 
 /* Large devices (large desktops, 1200px and up) */

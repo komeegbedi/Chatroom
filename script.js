@@ -17,8 +17,6 @@ const activateLightMode = () => {
     }
 }
 
-
-
 if (isDarkMode) {
     activateDarkMode();
 }

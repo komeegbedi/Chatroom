@@ -1,6 +1,7 @@
 const checkBox = document.getElementById("switch");
 const burgerMenu = document.querySelector('.burger-menu');
 const menuList = document.querySelector('.interest');
+const chatForm = document.querySelector('form');
 const isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches;
 const isLightMode = window.matchMedia("(prefers-color-scheme: light)").matches;
 const isNotSpecified = window.matchMedia("(prefers-color-scheme: no-preference)").matches;
@@ -18,7 +19,7 @@ const activateLightMode = () => {
         document.body.classList.remove('dark-mode');
         checkBox.checked = false;
     }
-    
+
 }
 
 const openMenu = () => {
@@ -56,6 +57,10 @@ const main = () => {
 
     checkBox.addEventListener('change', function () {
         document.body.classList.toggle('dark-mode');
+    });
+
+    chatForm.addEventListener('submit' , e => {
+        e.preventDefault();
     });
 
     openMenu();

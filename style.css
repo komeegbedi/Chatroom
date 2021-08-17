@@ -20,6 +20,7 @@ body{
     --text-hover: #fff;
     --border-color:rgba(0,0,0,0.3);
     --menu-color: rgb(51, 45, 67);
+    --logo-color:#000;
 }
 
 body.dark-mode{ /*overides the light theme*/
@@ -29,6 +30,7 @@ body.dark-mode{ /*overides the light theme*/
     --interest-hover: var(--chat-bg);
     --border-color: rgba(255,255,255,0.3);
     --menu-color:#6d85fa;
+    --logo-color:#fff;
 }
 
 /* base */
@@ -71,10 +73,12 @@ p {
     font-weight: bolder;
     margin: 3rem 0 .2rem 0;
 }
+
 label, .toggle {
     height: 2.8rem;
     border-radius: 100px;
 }
+
 label {
     width: 100%;
     background-color: rgba(0,0,0,.1);
@@ -90,6 +94,7 @@ label {
     box-shadow: 0 2px 15px rgba(0,0,0,.15);
     transition: transform .3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
+
 .names {
     font-size: 90%;
     font-weight: bolder;
@@ -145,10 +150,15 @@ section.interest div.channels div h4{
 }
 
 section.chat-area{
-    height: 75vh;
+    height: 72vh;
     width: 100%;
     position: relative;
     margin-bottom: 10px;
+}
+
+
+section.chat-area svg{
+    fill: var(--logo-color);
 }
 
 div.container.main-chat-area{
@@ -281,14 +291,10 @@ section.interest {
     -o-transition: all .25s ease-in-out;
     transition: all .25s ease-in-out;
     display: grid;
-    grid-auto-rows: .5fr 1.5fr;
+    grid-auto-rows: .2fr 1.8fr;
     position: fixed;
     width: 100%; 
     height: 0;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
     background-color: var(--bg-color);
     opacity:0;
     color: var(--text-color);

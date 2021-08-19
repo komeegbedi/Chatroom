@@ -53,6 +53,8 @@ main{
 
 .title{
     letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-size: 1.4em;
 }
 
 .content {
@@ -312,7 +314,7 @@ section.interest {
 
 section.interest.show{
     height: 100%;
-    opacity: .95;
+    opacity: .98;
     z-index: 9;
 }
 

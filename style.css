@@ -13,8 +13,8 @@ li{
 /** Color scheme (light-theme as default) **/
 
 body{
-    --bg-color: #fffefe;
-    --chat-bg:#f7f8ff;
+    --bg-color:#fffefe;
+    --chat-bg:#e2eaf0;
     --text-color: #000;
     --interest-hover:#6d85fa;
     --text-hover: #fff;
@@ -38,6 +38,7 @@ body.dark-mode{ /*overides the light theme*/
 body{
     background: var(--bg-color);
     color: var(--text-color);
+    position: relative;
 }
 html {
   scroll-behavior: smooth;
@@ -47,7 +48,7 @@ html {
     display: grid;
 }
 main{
-    margin-top: 50px;
+    margin-top: 20px;
 }
 
 .title{
@@ -150,24 +151,26 @@ section.interest div.channels div h4{
 }
 
 section.chat-area{
-    height: 72vh;
     width: 100%;
     position: relative;
     margin-bottom: 10px;
 }
-
-
 section.chat-area svg{
     fill: var(--logo-color);
 }
 
-div.container.main-chat-area{
+section.chat-area > div:nth-child(2){
+    height: 100%;
+}
+
+div.main-chat-area{
     height: 100%;
     background: var(--chat-bg);
     position: relative;
+    border-radius: 12px;
 }
 
-div.container.main-chat-area div.chat-box{
+div.main-chat-area div.chat-box{
     position: absolute;
     bottom: 0;
     left: 0;
@@ -176,12 +179,16 @@ div.container.main-chat-area div.chat-box{
     margin-bottom: 10px;
 }
 
-div.container.main-chat-area div.chat-box form{
-    width: 95%;
-    margin: auto;
+div.main-chat-area div.chat-box form{
+    display: flex;
+    justify-content: center;
 }
 
-div.container.main-chat-area div.chat-box form textarea{
+div.main-chat-area div.chat-box form > *{
+    margin: 0 6px 10px;
+}
+
+div.main-chat-area div.chat-box form textarea{
     width: 80%;
     min-height: 50px;
     padding: 0.375rem 0.75rem;
@@ -204,6 +211,7 @@ div.burger-menu{
     height: auto;
     z-index: 10;
 }
+
 
 #nav-icon3{
     width: 35px;
@@ -312,6 +320,10 @@ section.interest h2.title{
     margin-top: 50px;
 }
 
+section.chat-area{
+    height: 75vh;
+}
+
 /* Small devices (tablets, 768px and up) */
 @media  only screen and (min-width: 768px) { 
 
@@ -333,6 +345,21 @@ section.interest h2.title{
         height: 100%;
         opacity: .75;
         z-index: 9;
+        background: none;
+    }
+
+    main{
+        grid-template-columns: 30% 70%;
+        grid-column-gap: 20px;
+        width: 95%;
+        margin: auto;
+    }
+    section.interest h2.title{
+        margin-top: 0px;
+    }
+
+    section.chat-area{
+        height: 70vh;
     }
 }
 

@@ -19,41 +19,34 @@
 
     <link rel="stylesheet" href="style.css">
 
-    <style>
-       
-    </style>
-
 </head>
 <body>
     
-    <main class="grid">
-
-        <!-- bottom section -->
-       <section>
-
-            <div class="burger-menu">
-                <div id="nav-icon3">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
+    <!-- bottom section -->
+    <section>
+    
+        <div class="burger-menu">
+            <div id="nav-icon3">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    
+        <input type="checkbox" id="switch">
+        <div class="content">
+            <label for="switch">
+                <div class="toggle"></div>
+                <div class="names">
+                    <p class="light">Light</p>
+                    <p class="dark">Dark</p>
                 </div>
-            </div>
-            
-            <input type="checkbox" id="switch">
-            <div class="content">
-                <label for="switch">
-                    <div class="toggle"></div>
-                    <div class="names">
-                        <p class="light">Light</p>
-                        <p class="dark">Dark</p>
-                    </div>
-                </label>
-            </div>
-
-       </section>
-        
-        
+            </label>
+        </div>
+    
+    </section>
+    <main class="grid">   
 
         <!-- Interests -->
         <section class="interest">
@@ -107,14 +100,16 @@
                 </h2>
             </div>
             
-            <div class="container main-chat-area">
+            <div class="container">
 
-                <div class="chat-box">
-                    <form action="#">
-                       <textarea name="textBox" spellcheck="true"  autocapitalize="off" autocomplete="off"></textarea>
-                        <button type="submit" class="btn btn-primary"><img src="./assest/sent.svg" alt="send icon"></button>
-                    </form>
-                </div>
+               <div class="main-chat-area">
+                    <div class="chat-box">
+                        <form action="#">
+                            <textarea name="textBox" spellcheck="true" autocapitalize="off" autocomplete="off"></textarea>
+                            <button type="submit" class="btn btn-primary"><img src="./assest/sent.svg" alt="send icon"></button>
+                        </form>
+                    </div>
+               </div>
 
             </div>
 

@@ -47,9 +47,7 @@ html {
 .grid{
     display: grid;
 }
-main{
-    margin-top: 20px;
-}
+
 
 .title{
     letter-spacing: 0.1em;
@@ -60,10 +58,7 @@ main{
 .content {
     display: flex;
     flex-direction: column;
-    margin: auto;
     text-align: center;
-    width: 70%;
-    transform: translateY(5%);
 }
 
 p { 
@@ -205,11 +200,28 @@ div.main-chat-area div.chat-box form textarea{
 }
 
 /* mobile style */
-div.burger-menu{
+main.grid{
+    grid-template-rows: 80% 20%;
+    height: 100vh;
+    padding-top: 10px;
+}
+
+section.bottom-menu{
+    grid-row-start: 2;
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: center;
+    align-items: center;
+}
+
+section.bottom-menu > div.content{
+    flex: 2 2 0;
+}
+
+
+section.bottom-menu > div.burger-menu{
+    flex: 1 1 0;
     display: block;
-    position: fixed;
-    bottom: 0;
-    right: 30px;
     height: auto;
     z-index: 10;
 }
@@ -289,9 +301,6 @@ div.burger-menu{
 }
 
 .content {
-    position: fixed;
-    left: 10px;
-    bottom: 0;
     z-index: 9;
 }
 
@@ -323,7 +332,8 @@ section.interest h2.title{
 }
 
 section.chat-area{
-    height: 75vh;
+    height: 100%;
+    grid-template-rows: 10% 90%;
 }
 
 /* Small devices (tablets, 768px and up) */

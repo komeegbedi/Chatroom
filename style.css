@@ -14,14 +14,15 @@ li{
 
 body{
     --bg-color:#fffefe;
-    --chat-bg:#e2eaf0;
+    --chat-bg:#f7f9fe;
     --text-color: #000;
     --interest-hover:#6d85fa;
     --text-hover: #fff;
     --border-color:rgba(0,0,0,0.3);
     --menu-color: rgb(51, 45, 67);
     --logo-color:#000;
-    --text-chat-bg: rgba(109, 133, 250,.2);
+    --text-chat-bg: rgba(109, 133, 250,.7);
+    --btn-color:#6d84fb;
 }
 
 body.dark-mode{ /*overides the light theme*/
@@ -32,7 +33,8 @@ body.dark-mode{ /*overides the light theme*/
     --border-color: rgba(255,255,255,0.3);
     --menu-color:#6d85fa;
     --logo-color:#fff;
-    --text-chat-bg:rgba(93, 66, 173, .12);
+    --text-chat-bg:rgba(93, 66, 173, .2);
+    --btn-color:#7d5fd9;
 }
 
 /* base */
@@ -76,6 +78,10 @@ p {
     font-size: 140%;
     font-weight: bolder;
     margin: 3rem 0 .2rem 0;
+}
+
+.btn-primary{
+    background: var(--btn-color);
 }
 
 label, .toggle {
@@ -175,10 +181,6 @@ div.main-chat-area{
     grid-template-rows: 85% 15%;
 }
 
-div.main-chat-text{
-    overflow-y: scroll;
-}
-
 div.user-chat{
     margin-bottom: 15px;
     background: var(--text-chat-bg);
@@ -197,7 +199,7 @@ div.user-chat h3.username{
 
 div.user-chat p{
     font-family: 'Open Sans', sans-serif;
-    font-size: .85em;
+    font-size: .82em;
     font-weight: 200;
 }
 
@@ -231,6 +233,26 @@ div.main-chat-area div.chat-box form textarea{
     color: var(--text-color);
     vertical-align: bottom;
     resize: none;
+}
+
+div.main-chat-text{
+    overflow-y: scroll;
+    scrollbar-width: thin; 
+    -ms-overflow-style: none; 
+}
+
+div.main-chat-text::-webkit-scrollbar-track {
+    -webkit-box-shadow: none !important;
+    background-color: transparent !important;
+}
+
+div.main-chat-text::-webkit-scrollbar {
+    width: 6px !important;
+    background-color: transparent;
+}
+
+div.main-chat-text::-webkit-scrollbar-thumb {
+    background-color: #acacac;
 }
 
 /* mobile style */
@@ -370,6 +392,7 @@ section.chat-area{
     grid-template-rows: 10% 90%;
 }
 
+
 /* Small devices (tablets, 768px and up) */
 @media  only screen and (min-width: 768px) { 
 
@@ -421,6 +444,7 @@ section.chat-area{
     section.chat-area{
         height: 70vh;
     }
+
 }
 
 /* Large devices (large desktops, 1200px and up) */

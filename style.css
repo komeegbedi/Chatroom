@@ -82,6 +82,8 @@ p {
 
 .btn-primary{
     background: var(--btn-color);
+    outline: none;
+    border: none;
 }
 
 label, .toggle {
@@ -242,12 +244,13 @@ div.main-chat-text{
 }
 
 div.main-chat-text::-webkit-scrollbar-track {
-    -webkit-box-shadow: none !important;
-    background-color: transparent !important;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    background-color: transparent;
 }
 
 div.main-chat-text::-webkit-scrollbar {
-    width: 6px !important;
+    width: 6px;
     background-color: transparent;
 }
 

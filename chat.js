@@ -61,6 +61,5 @@ class Chat{
 }
 
 const test = new Chat('kome' , 'general');
-test.getChats();
 
 

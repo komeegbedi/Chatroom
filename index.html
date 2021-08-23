@@ -61,30 +61,30 @@
 
             <div class="channels">
 
-                <div class="col-12">
-                    <img src="./assest/game.svg" alt="Gaming Icon">
-                    <h4 class="interest-name">#Gaming</h4>
-                </div>
-                
-                <div class="col-12">
-                    <img src="./assest/football.svg" alt="Football Icon">
-                    <h4 class="interest-name">#Football</h4>
-                </div>
-
-                <div class="col-12">
+                <button class="btn col-12" id="general">
                     <img src="./assest/gossip.svg" alt="Gossip Icon">
-                    <h4 class="interest-name">#Gossip</h4>
-                </div>
+                    <span class="interest-name">#General</span>
+                </button>
 
-                <div class="col-12">
+                <button class="btn col-12" id="gaming">
+                    <img src="./assest/game.svg" alt="Gaming Icon">
+                     <span class="interest-name">#Gaming</span>
+                </button>
+                
+                <button class="btn col-12" id="football">
+                    <img src="./assest/football.svg" alt="Football Icon">
+                    <span class="interest-name">#Football</span>
+                </button>
+
+                <button class="btn col-12" id="programming">
                     <img src="./assest/code.svg" alt="Programming icon">
-                    <h4 class="interest-name">#Programming</h4>
-                </div>
+                    <span class="interest-name">#Programming</span>
+                </button>
 
-                <div class="col-12">
+                <button class="btn col-12" id="work">
                     <img src="./assest/work.svg" alt="Programming icon">
-                    <h4 class="interest-name">#Work</h4>
-                </div>
+                    <span class="interest-name">#Work</span>
+                </button>
 
             </div>
 
@@ -151,7 +151,33 @@
         </section>
     </main>
 
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+         https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-analytics.js"></script>
+    
+    <script>
+        // Your web app's Firebase configuration
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        var firebaseConfig = {
+            apiKey: "AIzaSyAUljHwSoLDXFItA4V9CwvzhWjHkDh1D1I",
+            authDomain: "chatroom-8da7d.firebaseapp.com",
+            projectId: "chatroom-8da7d",
+            storageBucket: "chatroom-8da7d.appspot.com",
+            messagingSenderId: "555515065937",
+            appId: "1:555515065937:web:b6b53e9a26954976b0ea70",
+            measurementId: "G-CD1L86JZVY"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        firebase.analytics();
 
-    <script src="script.js"></script>
+        const db = firebase.firestore();
+    </script>
+
+    <script src="ui.js"></script>
 </body>
 </html>

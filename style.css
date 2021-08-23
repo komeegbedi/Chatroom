@@ -139,22 +139,23 @@ label {
 }
 
 
-section.interest div.channels div{
+section.interest div.channels button{
     display: flex;
     cursor: pointer;
     padding: 2em;
     border-bottom: 1.5px solid #ccc;
     border-radius: 10px;
+    color: var(--text-color);
 }
 
 
-section.interest div.channels div:hover{
+section.interest div.channels button:hover{
     background: var(--interest-hover);
     color: var(--text-hover);
 }
 
 
-section.interest div.channels div h4{
+section.interest div.channels button span{
     margin-left: 20px;
     font-size: 0.9em;
     font-weight: 500;

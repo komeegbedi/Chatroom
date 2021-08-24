@@ -192,8 +192,11 @@ div.user-chat{
     width: 90%;
 }
 
-div.user-chat h3.username{
+div.user-chat > *{
     font-family: 'Open Sans', sans-serif;
+}
+
+div.user-chat h3.username{
     font-size: 1em;
     font-weight: 600;
     margin-bottom: 10px;
@@ -201,8 +204,14 @@ div.user-chat h3.username{
 }
 
 div.user-chat p{
-    font-family: 'Open Sans', sans-serif;
     font-size: .82em;
+    font-weight: 200;
+}
+
+div.user-chat div.modify a{
+    font-size: .75em;
+    margin-right: 10px;
+    letter-spacing: .05em;
     font-weight: 200;
 }
 

@@ -108,46 +108,54 @@
                <div class="main-chat-area grid">
 
                     <div class="main-chat-text">
-
                         <div class="user-chat">
                             <h3 class="username">kome</h3>
-                            <p class="usertext">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam repellendus cum nulla, omnis soluta dolorum temporibus iure architecto mollitia, vitae laborum nihil nisi blanditiis, accusamus aspernatur reiciendis voluptatibus nesciunt odit!</p>
+                            <p class="usertext">
+                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam repellendus cum nulla, omnis soluta dolorum temporibus iure architecto mollitia, 
+                                vitae laborum nihil nisi blanditiis, accusamus aspernatur reiciendis voluptatibus nesciunt odit!
+                            </p>
                             <div class="modify">
-                                <a href="#">Edit</a>
-                                <a href="#">Delete</a>
+                                <a href="#" class="edit">Edit</a>
+                                <a href="#" class="delete">Delete</a>
                             </div>
                         </div>
 
                         <div class="user-chat">
                             <h3 class="username">John</h3>
-                            <p class="usertext">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam repellendus cum nulla, omnis soluta
+                            <p class="usertext">
+                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam repellendus cum nulla, omnis soluta
                                 dolorum temporibus iure architecto mollitia, vitae laborum nihil nisi blanditiis, accusamus aspernatur
-                                reiciendis voluptatibus nesciunt odit!</p>
+                                reiciendis voluptatibus nesciunt odit!
+                            </p>
                             <div class="modify">
-                                <a href="#">Edit</a>
-                                <a href="#">Delete</a>
+                                <a href="#" class="edit">Edit</a>
+                                <a href="#" class="delete">Delete</a>
                             </div>
                         </div>
 
                         <div class="user-chat">
                             <h3 class="username">Josh</h3>
-                            <p class="usertext">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam repellendus cum nulla, omnis soluta
+                            <p class="usertext">
+                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam repellendus cum nulla, omnis soluta
                                 dolorum temporibus iure architecto mollitia, vitae laborum nihil nisi blanditiis, accusamus aspernatur
-                                reiciendis voluptatibus nesciunt odit!</p>
+                                reiciendis voluptatibus nesciunt odit!
+                            </p>
                             <div class="modify">
-                                <a href="#">Edit</a>
-                                <a href="#">Delete</a>
+                                <a href="#" class="edit">Edit</a>
+                                <a href="#" class="delete">Delete</a>
                             </div>
                         </div>
 
                         <div class="user-chat">
                             <h3 class="username">Nneka</h3>
-                            <p class="usertext">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam repellendus cum nulla, omnis soluta
+                            <p class="usertext">
+                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam repellendus cum nulla, omnis soluta
                                 dolorum temporibus iure architecto mollitia, vitae laborum nihil nisi blanditiis, accusamus aspernatur
-                                reiciendis voluptatibus nesciunt odit!</p>
+                                reiciendis voluptatibus nesciunt odit!
+                            </p>
                             <div class="modify">
-                                <a href="#">Edit</a>
-                                <a href="#">Delete</a>
+                                <a href="#" class="edit">Edit</a>
+                                <a href="#" class="delete">Delete</a>
                             </div>
                         </div>
 
@@ -156,7 +164,7 @@
                     <div class="chat-box">
                         <form action="#">
                             <textarea name="textBox" spellcheck="true" autocapitalize="off" autocomplete="off"></textarea>
-                            <button type="submit" class="btn btn-primary"><img src="./assest/sent.svg" alt="send icon"></button>
+                            <button type="submit" class="btn btn-primary" disabled><img src="./assest/sent.svg" alt="send icon"></button>
                         </form>
                     </div>
                </div>
@@ -189,8 +197,7 @@
 
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
-        firebase.analytics();
-
+        const analytics = firebase.analytics();
         const db = firebase.firestore();
     </script>
 

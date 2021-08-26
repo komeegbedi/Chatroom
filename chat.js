@@ -1,4 +1,3 @@
-// a chat is going to contain who sent the message , what room it was sent from , the message sent , the time it was sent
 class Chat{
 
     constructor(user , room ){
@@ -46,13 +45,26 @@ class Chat{
 
     }
 
-    getChats(){
-        this.chats
-        .where('room' , '==' , this.chatroom)
-        .orderBy('sent_at')
-        .onSnapshot(snapshot => {
-            console.log(snapshot.docChanges());
-        });
+    getChats(callback){
+       this.unsubscribe =  this.chats
+                            .where('room' , '==' , this.chatroom)
+                            .orderBy('sent_at')
+                            .onSnapshot(snapshot => {
+
+                                snapshot.docChanges().forEach(change => {
+                                    callback(change.doc.data());
+                                });
+
+                            });
+    }
+
+    updateRoom(newRoom){
+        this.chatroom = newRoom;
+
+        if(this.unsubscribe !== null){
+            this.unsubscribe();
+        }
+        
     }
 
     toString(){
@@ -60,6 +72,6 @@ class Chat{
     }
 }
 
-const test = new Chat('kome' , 'general');
-
+// const test = new Chat('kome' , 'general');
+// test.getChats();
 

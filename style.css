@@ -84,6 +84,13 @@ p {
     background: var(--btn-color);
     outline: none;
     border: none;
+    cursor: pointer;
+    transition: all .15s ease-in;
+}
+
+button.btn-primary:disabled {
+    opacity: .3;
+    pointer-events: all;
 }
 
 label, .toggle {
@@ -99,6 +106,7 @@ label {
     margin: 1.8rem 0 4rem 0; 
     cursor: pointer;
 }
+
 .toggle {
     position: absolute;
     width: 50%;
@@ -233,7 +241,7 @@ div.main-chat-area div.chat-box form > *{
     margin: 0 6px 10px;
 }
 
-div.main-chat-area div.chat-box form textarea{
+div.main-chat-area div.chat-box form textarea , div.user-chat  textarea{
     width: 80%;
     min-height: 50px;
     padding: 0.375rem 0.75rem;
@@ -245,6 +253,13 @@ div.main-chat-area div.chat-box form textarea{
     color: var(--text-color);
     vertical-align: bottom;
     resize: none;
+}
+
+div.user-chat textarea{
+    width: 100%;
+    font-size: .82em;
+    min-height: 100px;
+    margin-bottom: 10px;
 }
 
 div.main-chat-text{
@@ -286,7 +301,6 @@ section.bottom-menu{
 section.bottom-menu > div.content{
     flex: 2 2 0;
 }
-
 
 section.bottom-menu > div.burger-menu{
     flex: 1 1 0;

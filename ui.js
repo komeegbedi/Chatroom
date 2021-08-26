@@ -8,6 +8,7 @@ const isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches;
 const isLightMode = window.matchMedia("(prefers-color-scheme: light)").matches;
 const isNotSpecified = window.matchMedia("(prefers-color-scheme: no-preference)").matches;
 const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified;
+const chat0bj = new Chat('kome', 'general');
 
 
 const activateDarkMode = () => {
@@ -57,6 +58,11 @@ const modifyChat = () =>{
             links[1].setAttribute('class', 'save');
 
         }
+        else if (e.target.classList.contains('delete')) {
+            //add question if they want to delete
+            chat0bj.deleteMessage(parentTag.getAttribute('id'));
+        }
+
         else if (e.target.classList.contains('cancel')) {
 
             let html = `<p class="usertext">${initalText}</p>`;
@@ -67,6 +73,48 @@ const modifyChat = () =>{
             links[0].setAttribute('class', 'edit');
             links[1].innerHTML = 'Delete';
             links[1].setAttribute('class', 'delete');
+        }
+       
+
+    });
+}
+
+const updateUI = () =>{
+    
+    let chatBubble;
+
+    chat0bj.getChats((chat , changeType , ID) =>{
+      
+       if(changeType === 'added'){
+            chatBubble = `
+                        <div class="user-chat" id ="${ID}">
+                                <h3 class="username">${chat.username}</h3>
+                                <p class="usertext">${chat.message}</p>
+                                <div class="modify">
+                                    <a href="#" class="edit">Edit</a>
+                                    <a href="#" class="delete">Delete</a>
+                                </div>`;
+
+        chatArea.innerHTML += chatBubble;
+        let newChat = document.querySelector(`div#${ID}`);
+        chatArea.scrollTo({ top: newChat.offsetTop , left: newChat.offsetLeft, behavior: 'smooth' });
+        
+       }
+       else if (changeType === 'removed'){
+            document.querySelector(`div#${ID}`).remove();
+       }
+
+    });
+}
+
+const sendChat = () => {
+    chatForm.addEventListener('submit', e => {
+        e.preventDefault();
+
+        if(textArea.value.trim().length !== 0){
+            chat0bj.addNewChat(textArea.value);
+            chatForm.reset();
+            chatForm.querySelector('button').setAttribute('disabled', true);
         }
     });
 }
@@ -98,9 +146,6 @@ const main = () => {
         document.body.classList.toggle('dark-mode');
     });
 
-    chatForm.addEventListener('submit' , e => {
-        e.preventDefault();
-    });
 
     textArea.addEventListener('keyup' , ()=> {
 
@@ -115,6 +160,8 @@ const main = () => {
 
     openMenu();
     modifyChat();
+    updateUI();
+    sendChat();
 }
 
 main();

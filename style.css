@@ -29,7 +29,7 @@ body.dark-mode{ /*overides the light theme*/
     --bg-color: #332d43;
     --chat-bg: rgba(60,54,78,255);
     --text-color: #fff;
-    --interest-hover: var(--chat-bg);
+    --interest-hover: rgba(70, 62, 95, 0.8);
     --border-color: rgba(255,255,255,0.3);
     --menu-color:#6d85fa;
     --logo-color:#fff;
@@ -157,7 +157,7 @@ section.interest div.channels button{
 }
 
 
-section.interest div.channels button:hover{
+section.interest div.channels button:hover , section.interest div.channels button.selected{
     background: var(--interest-hover);
     color: var(--text-hover);
 }

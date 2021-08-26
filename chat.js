@@ -50,9 +50,10 @@ class Chat{
                             .where('room' , '==' , this.chatroom)
                             .orderBy('sent_at')
                             .onSnapshot(snapshot => {
-
                                 snapshot.docChanges().forEach(change => {
-                                    callback(change.doc.data());
+                                   
+                                    callback(change.doc.data(), change.type , change.doc.id);
+                                    
                                 });
 
                             });

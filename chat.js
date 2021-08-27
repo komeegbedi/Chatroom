@@ -18,9 +18,10 @@ class Chat{
 
     async addNewChat(message){
       return await this.chats.add({
-            message,
+            message: message.replace(/(?:\r\n|\r|\n)/g, '<br>'),
             room: this.chatroom,
             username: this.username,
+            isEdited: false,
             sent_at: firebase.firestore.Timestamp.fromDate(new Date()) 
        });
     }
@@ -29,7 +30,8 @@ class Chat{
 
        return  await this.chats.doc(messageID)
                 .update({
-                    message: newMessage
+                    message: newMessage,
+                    isEdited: true
                 })
                 .then(() => {
                     console.log("Document successfully updated!");
@@ -67,6 +69,16 @@ class Chat{
         if(this.unsubscribe !== null){
             this.unsubscribe();
         }
+    }
+
+    async isEdited(messageID){
+        return await this.chats.doc(messageID)
+                    .get().then(doc => {
+                        return doc.data().isEdited;
+                    })
+                    .catch(err =>{
+                        console.log(err);
+                    });
     }
 
     toString(){

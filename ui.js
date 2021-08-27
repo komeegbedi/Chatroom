@@ -54,8 +54,8 @@ const modifyChat = () =>{
 
         if (e.target.classList.contains('edit')) {
 
-            let chatText = parentTag.querySelector('p');
-            let text = chatText.innerHTML;
+            let chatText = parentTag.querySelector('pre');
+            let text = chatText.innerHTML.replace(/<[^>]*>/g, "\n");
             initalText = text;
             let editInput = `<textarea class"edit-input" style="height:${chatText.offsetHeight * 2}px" >${text.trim()}</textarea>`;
             let links = parentTag.querySelectorAll('div.modify a');
@@ -65,15 +65,18 @@ const modifyChat = () =>{
             links[0].setAttribute('class', 'cancel');
             links[1].innerHTML = 'Save';
             links[1].setAttribute('class', 'save');
+            links[1].removeAttribute('data-bs-target');
+            links[1].removeAttribute('data-bs-toggle')
 
         }
+
         else if (e.target.classList.contains('delete')) {
             deleteID = parentTag.getAttribute('id');
         }
 
         else if (e.target.classList.contains('cancel')) {
 
-            let html = `<p class="usertext">${initalText}</p>`;
+            let html = `<pre class="usertext">${initalText}</pre>`;
             parentTag.childNodes[1].insertAdjacentHTML('afterend', html);
             parentTag.querySelector('textarea').remove();
             let links = parentTag.querySelectorAll('div.modify a');
@@ -81,6 +84,41 @@ const modifyChat = () =>{
             links[0].setAttribute('class', 'edit');
             links[1].innerHTML = 'Delete';
             links[1].setAttribute('class', 'delete');
+            links[1].setAttribute('data-bs-target', '#staticBackdrop');
+            links[1].setAttribute('data-bs-toggle', 'modal');
+        }
+
+        else if (e.target.classList.contains('save')){
+            let newText = parentTag.querySelector('textarea').value.trim();
+            let html;
+
+            chat0bj.isEdited(parentTag.getAttribute('id')).then(isEdited => {
+
+                if (newText.length !== 0 && newText.localeCompare(initalText) !== 0) {
+
+                    chat0bj.updateMessage(newText, parentTag.getAttribute('id'));
+                    html = `<pre class="usertext">${newText}</pre>`;
+
+                    if(!isEdited)
+                        html += `<span class="edited">(edited)</span>`;
+                }
+                else {
+                    html = `<pre class="usertext">${initalText}</pre>`;
+                }
+
+                parentTag.childNodes[1].insertAdjacentHTML('afterend', html);
+                parentTag.querySelector('textarea').remove();
+                let links = parentTag.querySelectorAll('div.modify a');
+                links[0].innerHTML = 'Edit';
+                links[0].setAttribute('class', 'edit');
+                links[1].innerHTML = 'Delete';
+                links[1].setAttribute('class', 'delete');
+                links[1].setAttribute('data-bs-target', '#staticBackdrop');
+                links[1].setAttribute('data-bs-toggle', 'modal');
+             
+
+            }).catch(err => console.log(err));
+            
         }
        
     });
@@ -96,7 +134,12 @@ const updateUI = () =>{
             chatBubble = `
                         <div class="user-chat" id ="${ID}">
                                 <h3 class="username">${chat.username}</h3>
-                                <p class="usertext">${chat.message}</p>`;
+                                <pre class="usertext">${chat.message}</pre>`;
+
+        
+           if (chat.isEdited){
+                chatBubble += `<span class="edited">(edited)</span>`;
+            }
             
             if(chat.username.localeCompare(chat0bj.getName()) === 0){
 
@@ -105,6 +148,8 @@ const updateUI = () =>{
                                         <a href="#" class="delete" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Delete</a>
                                     </div>`;
             }
+
+           chatBubble += `</div>`;
 
         chatArea.innerHTML += chatBubble;
         let newChat = document.getElementById(ID);
@@ -145,6 +190,7 @@ const start = () =>{
     document.querySelector('button#delete').addEventListener('click' , ()=> {
         if (deleteID) {
             chat0bj.deleteMessage(deleteID);
+            deleteID = undefined;
         }
         myModal.hide();
     });

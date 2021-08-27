@@ -12,6 +12,10 @@ class Chat{
         this.chats = db.collection('chats');
     }
 
+    getName(){
+        return this.username;
+    }
+
     async addNewChat(message){
       return await this.chats.add({
             message,
@@ -51,9 +55,7 @@ class Chat{
                             .orderBy('sent_at')
                             .onSnapshot(snapshot => {
                                 snapshot.docChanges().forEach(change => {
-                                   
                                     callback(change.doc.data(), change.type , change.doc.id);
-                                    
                                 });
 
                             });
@@ -65,14 +67,10 @@ class Chat{
         if(this.unsubscribe !== null){
             this.unsubscribe();
         }
-        
     }
 
     toString(){
         return this.username + " " + this.chatroom;
     }
 }
-
-// const test = new Chat('kome' , 'general');
-// test.getChats();
 

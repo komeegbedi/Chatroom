@@ -1,14 +1,20 @@
 const checkBox = document.getElementById("switch");
 const burgerMenu = document.querySelector('.burger-menu');
 const menuList = document.querySelector('.interest');
-const chatForm = document.querySelector('form');
+const chatForm = document.querySelector('div.chat-box form');
 const textArea = chatForm.querySelector('textarea');
 const chatArea = document.querySelector('div.main-chat-text');
 const isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches;
 const isLightMode = window.matchMedia("(prefers-color-scheme: light)").matches;
 const isNotSpecified = window.matchMedia("(prefers-color-scheme: no-preference)").matches;
+const registerForm = document.querySelector('div#overlay form');
+const users = db.collection('users');
+const userInput = document.querySelector('div#overlay form input');
+const errorOutput = registerForm.querySelector('p.output');
+const loadingGif = document.querySelector('#overlay form button img');
+const regEx = /((?!^\d+$))(?=^[a-z0-9]{4,10}$).*$/;
 const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified;
-const chat0bj = new Chat('kome', 'general');
+let chat0bj;
 
 
 const activateDarkMode = () => {
@@ -89,16 +95,20 @@ const updateUI = () =>{
             chatBubble = `
                         <div class="user-chat" id ="${ID}">
                                 <h3 class="username">${chat.username}</h3>
-                                <p class="usertext">${chat.message}</p>
-                                <div class="modify">
-                                    <a href="#" class="edit">Edit</a>
-                                    <a href="#" class="delete">Delete</a>
-                                </div>`;
+                                <p class="usertext">${chat.message}</p>`;
+            
+            if(chat.username.localeCompare(chat0bj.getName()) === 0){
+
+                  chatBubble +=  `<div class="modify">
+                                        <a href="#" class="edit">Edit</a>
+                                        <a href="#" class="delete">Delete</a>
+                                    </div>`;
+            }
 
         chatArea.innerHTML += chatBubble;
         let newChat = document.querySelector(`div#${ID}`);
         chatArea.scrollTo({ top: newChat.offsetTop , left: newChat.offsetLeft, behavior: 'smooth' });
-        
+
        }
        else if (changeType === 'removed'){
             document.querySelector(`div#${ID}`).remove();
@@ -116,6 +126,70 @@ const sendChat = () => {
             chatForm.reset();
             chatForm.querySelector('button').setAttribute('disabled', true);
         }
+    });
+}
+
+const start = () =>{
+
+    textArea.addEventListener('keyup', () => {
+
+        if (textArea.value.trim().length !== 0) {
+            chatForm.querySelector('button').removeAttribute('disabled');
+        }
+        else if (!chatForm.querySelector('button').hasAttribute('disabled')) {
+            chatForm.querySelector('button').setAttribute('disabled', true);
+        }
+    });
+
+    document.querySelector('div#overlay').style.display ="none";
+
+    openMenu();
+    modifyChat();
+    updateUI();
+    sendChat();
+}
+
+const registerUser = () =>{
+
+    registerForm.addEventListener('submit', e => {
+        e.preventDefault();
+        let name = userInput.value.trim();
+
+        if (!name.match(regEx)) {
+            errorOutput.innerHTML = "Please follow the guidelines listed below!";
+            errorOutput.style.display = "block";
+        }
+        else {
+
+            loadingGif.style.display = "inline";
+
+            let found = false;
+
+            users.get().then(snapshot => {
+
+                for (let index = 0; index < snapshot.docs.length && !found; index++) {
+
+                    if (snapshot.docs[index].data().name.localeCompare(name) === 0) {
+                        found = true;
+                        errorOutput.innerHTML = "Username is not available";
+                        errorOutput.style.display = "block";
+                    }
+                    else {
+                        users.add({ name });
+                        chat0bj = new Chat(name , 'general');
+                        localStorage.setItem('name' , name);
+                        start();
+                    }
+                }
+
+                loadingGif.style.display = "none";
+
+            }).catch(err => {
+                console.log(err);
+            });
+
+        }
+
     });
 }
 
@@ -145,23 +219,15 @@ const main = () => {
     checkBox.addEventListener('change', function () {
         document.body.classList.toggle('dark-mode');
     });
-
-
-    textArea.addEventListener('keyup' , ()=> {
-
-        if(textArea.value.trim().length !== 0){
-            chatForm.querySelector('button').removeAttribute('disabled');
-        }
-        else if (!chatForm.querySelector('button').hasAttribute('disabled')){
-            chatForm.querySelector('button').setAttribute('disabled' , true);
-        }
-       
-    });
-
-    openMenu();
-    modifyChat();
-    updateUI();
-    sendChat();
+    
+    let userName = localStorage.getItem('name');
+    if (!userName){
+        registerUser();
+    }
+    else{
+        chat0bj = new Chat(userName, 'general');
+        start();
+    }
 }
 
 main();

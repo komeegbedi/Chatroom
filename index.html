@@ -23,7 +23,31 @@
 
 </head>
 <body>
-    
+
+    <div id="overlay">
+       <div class="container">
+
+            <form action="#">
+                <div class="form-group">
+                    <label for="exampleFormControlInput1">Username</label>
+                    <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Pick a username" autocomplete="off">
+                    <p class="lead output text-danger"></p>
+                </div>
+            
+                <button type="submit" class="btn btn-primary">Get Started! <img src="./assest/loading.gif" alt="loading gif" height="25px"></button>
+
+                <ul>
+                    <li>Username can't be changed after registration.</li>
+                    <li>Username has to be between 4 to 12 characters.(only lowercase)</li>
+                    <li>Numbers can't be used alone.</li>
+                    <li>No special characters (including emojis)</li>
+                </ul>
+               
+            </form>
+
+       </div>
+    </div>
+
     <main class="grid">   
 
         <!-- bottom section -->
@@ -125,8 +149,6 @@
     <!-- The core Firebase JS SDK is always required and must be listed first -->
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     
-    <!-- TODO: Add SDKs for Firebase products that you want to use
-         https://firebase.google.com/docs/web/setup#available-libraries -->
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-analytics.js"></script>
     
@@ -148,7 +170,6 @@
         const analytics = firebase.analytics();
         const db = firebase.firestore();
     </script>
-
     <script src="chat.js"></script>
     <script src="ui.js"></script>
 </body>

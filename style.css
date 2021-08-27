@@ -52,6 +52,76 @@ html {
   scroll-behavior: smooth;
 }
 
+#overlay {
+  position: fixed; 
+  display: block; 
+  width: 100%; 
+  height: 100%; 
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--bg-color); 
+  opacity: .98;
+  z-index: 1000; 
+  cursor: pointer; 
+}
+
+#overlay > div.container{
+    height: 100%;
+    display: grid;
+    align-content: center;
+}
+
+#overlay form label {
+    display: block;
+    margin: 5px 0;
+}
+
+#overlay form input{
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid var(--text-color);
+    color: var(--text-color);
+}
+
+#overlay form input:focus{
+    outline: none;
+    box-shadow: none;
+}
+
+#overlay form button img{
+    display: none;
+}
+
+#overlay form p.lead{
+    font-size: 0.9em;
+    margin: 10px 0;
+}
+
+#overlay form ul{
+    font-size: 0.85em;
+    margin: 30px 0;
+    opacity: .8;
+}
+
+#overlay form ul li{
+    margin-top: 5px;
+}
+
+#overlay form ul li span{
+    font-weight: 900;
+    font-size: 1.2em;
+}
+
+p.lead.output{
+    display: none;
+}
+
+#overlay form button{
+    margin-top: 10px;
+}
+
 .grid{
     display: grid;
 }
@@ -93,12 +163,12 @@ button.btn-primary:disabled {
     pointer-events: all;
 }
 
-label, .toggle {
+section.bottom-menu label, section.bottom-menu .toggle {
     height: 2.8rem;
     border-radius: 100px;
 }
 
-label {
+section.bottom-menu label {
     width: 100%;
     background-color: rgba(0,0,0,.1);
     border-radius: 100px;
@@ -107,7 +177,7 @@ label {
     cursor: pointer;
 }
 
-.toggle {
+section.bottom-menu .toggle {
     position: absolute;
     width: 50%;
     background-color: #fff;
@@ -284,6 +354,12 @@ div.main-chat-text::-webkit-scrollbar-thumb {
 }
 
 /* mobile style */
+
+ #overlay form{
+    width: 80%;
+    margin: auto;
+}
+
 main.grid{
     grid-template-rows: 80% 20%;
     height: 100vh;
@@ -427,6 +503,10 @@ section.chat-area{
 
 /* Medium devices (desktops, 992px and up) */
 @media only screen and (min-width: 992px) { 
+
+    #overlay form{
+        width: 50%;
+    }
 
     main.grid{
         grid-template-rows: 20% 80%;

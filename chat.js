@@ -30,7 +30,7 @@ class Chat{
 
        return  await this.chats.doc(messageID)
                 .update({
-                    message: newMessage,
+                    message: newMessage.replace(/(?:\r\n|\r|\n)/g, '<br>'),
                     isEdited: true
                 })
                 .then(() => {
@@ -52,7 +52,7 @@ class Chat{
     }
 
     getChats(callback){
-       this.unsubscribe =  this.chats
+       this.unsubscribe = this.chats
                             .where('room' , '==' , this.chatroom)
                             .orderBy('sent_at')
                             .onSnapshot(snapshot => {
@@ -84,5 +84,9 @@ class Chat{
     toString(){
         return this.username + " " + this.chatroom;
     }
+
+   
 }
+
+
 

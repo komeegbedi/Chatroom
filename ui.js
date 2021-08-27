@@ -19,7 +19,6 @@ const myModal = new bootstrap.Modal(document.getElementById('staticBackdrop'));
 let chat0bj;
 let deleteID;
 
-
 const activateDarkMode = () => {
     document.body.classList.add('dark-mode');
     checkBox.checked = true;
@@ -31,7 +30,6 @@ const activateLightMode = () => {
         document.body.classList.remove('dark-mode');
         checkBox.checked = false;
     }
-
 }
 
 const openMenu = () => {
@@ -89,6 +87,7 @@ const modifyChat = () =>{
         }
 
         else if (e.target.classList.contains('save')){
+
             let newText = parentTag.querySelector('textarea').value.trim();
             let html;
 
@@ -126,10 +125,11 @@ const modifyChat = () =>{
 
 const updateUI = () =>{
     
-    let chatBubble;
+    
 
     chat0bj.getChats((chat , changeType , ID) =>{
-      
+
+        let chatBubble;
        if(changeType === 'added'){
             chatBubble = `
                         <div class="user-chat" id ="${ID}">
@@ -149,11 +149,11 @@ const updateUI = () =>{
                                     </div>`;
             }
 
-           chatBubble += `</div>`;
+            chatBubble += `</div>`;
 
-        chatArea.innerHTML += chatBubble;
-        let newChat = document.getElementById(ID);
-        chatArea.scrollTo({ top: newChat.offsetTop , left: newChat.offsetLeft, behavior: 'smooth' });
+            chatArea.innerHTML += chatBubble;
+            let newChat = document.getElementById(ID);
+            chatArea.scrollTo({ top: newChat.offsetTop , left: newChat.offsetLeft, behavior: 'smooth' });
 
        }
        else if (changeType === 'removed'){
@@ -163,15 +163,36 @@ const updateUI = () =>{
     });
 }
 
+const changeRoom = () =>{
+
+    document.querySelector('div.channels').addEventListener('click' , e =>{
+        let clickedOn;
+
+        if (e.target.tagName === 'BUTTON'){
+            clickedOn = e.target;
+        }
+        else if (e.target.parentNode.tagName === 'BUTTON'){
+            clickedOn = e.target.parentNode;
+        }
+        document.querySelector('div.channels button.selected').classList.remove('selected');
+        clickedOn.classList.add('selected');
+        chat0bj.updateRoom(clickedOn.getAttribute('id'));
+        chatArea.innerHTML = '';
+        updateUI();
+    });
+}
+
 const sendChat = () => {
+
     chatForm.addEventListener('submit', e => {
         e.preventDefault();
 
         if(textArea.value.trim().length !== 0){
-            chat0bj.addNewChat(textArea.value);
+            chat0bj.addNewChat(textArea.value.trim());
             chatForm.reset();
             chatForm.querySelector('button').setAttribute('disabled', true);
         }
+
     });
 }
 
@@ -188,10 +209,12 @@ const start = () =>{
     });
 
     document.querySelector('button#delete').addEventListener('click' , ()=> {
+
         if (deleteID) {
             chat0bj.deleteMessage(deleteID);
             deleteID = undefined;
         }
+
         myModal.hide();
     });
 
@@ -205,11 +228,14 @@ const start = () =>{
     modifyChat();
     updateUI();
     sendChat();
+    changeRoom();
 }
+
 
 const registerUser = () =>{
 
     registerForm.addEventListener('submit', e => {
+
         e.preventDefault();
         let name = userInput.value.trim();
 
@@ -227,18 +253,18 @@ const registerUser = () =>{
 
                 for (let index = 0; index < snapshot.docs.length && !found; index++) {
                     let nameInDb = snapshot.docs[index].data().name.toLowerCase();
+                    found = nameInDb.localeCompare(name.toLowerCase()) === 0;
+                }
 
-                    if (nameInDb.localeCompare(name.toLowerCase()) === 0) {
-                        found = true;
-                        errorOutput.innerHTML = "Username is not available";
-                        errorOutput.style.display = "block";
-                    }
-                    else {
-                        users.add({ name });
-                        chat0bj = new Chat(name , 'general');
-                        localStorage.setItem('name' , name);
-                        start();
-                    }
+                if (found) {
+                    errorOutput.innerHTML = "Username is not available";
+                    errorOutput.style.display = "block";
+                }
+                else {
+                    users.add({ name });
+                    chat0bj = new Chat(name, 'general');
+                    localStorage.setItem('name', name);
+                    start();
                 }
 
                 loadingGif.style.display = "none";
@@ -281,8 +307,9 @@ const main = () => {
     });
 
     let userName = localStorage.getItem('name');
-    if (!userName){
+    if (!userName || !userName.match(regEx)){
         registerUser();
+      
     }
     else{
         chat0bj = new Chat(userName, 'general');

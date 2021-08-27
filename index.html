@@ -30,7 +30,7 @@
             <form action="#">
                 <div class="form-group">
                     <label for="exampleFormControlInput1">Username</label>
-                    <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Pick a username" autocomplete="off">
+                    <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Pick a username" autocomplete="off" required> 
                     <p class="lead output text-danger"></p>
                 </div>
             
@@ -38,7 +38,7 @@
 
                 <ul>
                     <li>Username can't be changed after registration.</li>
-                    <li>Username has to be between 4 to 12 characters.(only lowercase)</li>
+                    <li>Username has to be between 4 to 12 characters.</li>
                     <li>Numbers can't be used alone.</li>
                     <li>No special characters (including emojis)</li>
                 </ul>
@@ -146,7 +146,30 @@
         </section>
     </main>
 
+    <!-- Modal -->
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Delete Message</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" style="color: #000;">
+                    Are you sure you want to delete this message? This action cannot be undone.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="close">Close</button>
+                    <button type="button" class="btn btn-danger" id="delete">Understood</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
+        crossorigin="anonymous"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>

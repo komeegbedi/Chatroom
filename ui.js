@@ -12,9 +12,12 @@ const users = db.collection('users');
 const userInput = document.querySelector('div#overlay form input');
 const errorOutput = registerForm.querySelector('p.output');
 const loadingGif = document.querySelector('#overlay form button img');
-const regEx = /((?!^\d+$))(?=^[a-z0-9]{4,10}$).*$/;
+const regEx = /((?!^\d+$))(?=^[a-zA-Z0-9]{4,10}$).*$/;
 const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified;
+const myModal = new bootstrap.Modal(document.getElementById('staticBackdrop'));
+
 let chat0bj;
+let deleteID;
 
 
 const activateDarkMode = () => {
@@ -65,8 +68,7 @@ const modifyChat = () =>{
 
         }
         else if (e.target.classList.contains('delete')) {
-            //add question if they want to delete
-            chat0bj.deleteMessage(parentTag.getAttribute('id'));
+            deleteID = parentTag.getAttribute('id');
         }
 
         else if (e.target.classList.contains('cancel')) {
@@ -81,7 +83,6 @@ const modifyChat = () =>{
             links[1].setAttribute('class', 'delete');
         }
        
-
     });
 }
 
@@ -101,7 +102,7 @@ const updateUI = () =>{
 
                   chatBubble +=  `<div class="modify">
                                         <a href="#" class="edit">Edit</a>
-                                        <a href="#" class="delete">Delete</a>
+                                        <a href="#" class="delete" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Delete</a>
                                     </div>`;
             }
 
@@ -141,6 +142,17 @@ const start = () =>{
         }
     });
 
+    document.querySelector('button#delete').addEventListener('click' , ()=> {
+        if (deleteID) {
+            chat0bj.deleteMessage(deleteID);
+        }
+        myModal.hide();
+    });
+
+    document.querySelector('button#close').addEventListener('click', () => {
+        deleteID = undefined;
+    });
+
     document.querySelector('div#overlay').style.display ="none";
 
     openMenu();
@@ -168,8 +180,9 @@ const registerUser = () =>{
             users.get().then(snapshot => {
 
                 for (let index = 0; index < snapshot.docs.length && !found; index++) {
+                    let nameInDb = snapshot.docs[index].data().name.toLowerCase();
 
-                    if (snapshot.docs[index].data().name.localeCompare(name) === 0) {
+                    if (nameInDb.localeCompare(name.toLowerCase()) === 0) {
                         found = true;
                         errorOutput.innerHTML = "Username is not available";
                         errorOutput.style.display = "block";
@@ -208,6 +221,7 @@ const main = () => {
         console.log('You specified no preference for a color scheme or your browser does not support it. I schedule dark mode during night time.')
         now = new Date();
         hour = now.getHours();
+        
         if (hour < 4 || hour >= 16) {
             activateDarkMode();
         }
@@ -219,7 +233,7 @@ const main = () => {
     checkBox.addEventListener('change', function () {
         document.body.classList.toggle('dark-mode');
     });
-    
+
     let userName = localStorage.getItem('name');
     if (!userName){
         registerUser();

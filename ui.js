@@ -107,12 +107,12 @@ const updateUI = () =>{
             }
 
         chatArea.innerHTML += chatBubble;
-        let newChat = document.querySelector(`div#${ID}`);
+        let newChat = document.getElementById(ID);
         chatArea.scrollTo({ top: newChat.offsetTop , left: newChat.offsetLeft, behavior: 'smooth' });
 
        }
        else if (changeType === 'removed'){
-            document.querySelector(`div#${ID}`).remove();
+           document.getElementById(ID).remove();
        }
 
     });

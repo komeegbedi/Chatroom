@@ -33,16 +33,16 @@ body{
 
 body.dark-mode{ /*overides the light theme*/
     --bg-color:#141e30;
-    --chat-bg: #323249;
+    --chat-bg: #252131;
     --text-color: #fff;
-    --interest-hover: rgba(70, 62, 95, 0.8);
+    --interest-hover:#2E293D;
     --border-color: rgba(255,255,255,0.3);
     --menu-color:#6d85fa;
     --logo-color:#fff;
     --text-chat-bg:rgba(93, 66, 173, .2);
     --btn-color:#7d5fd9;
     --modal-body:#564E6C;
-    --btn-sec:#7698B3;
+    --btn-sec:#365181;
     --overlay-bg: #3D4B67;
     --btn-grad-l: #83a4d4;
     --btn-grad-m: #b6fbff;
@@ -282,7 +282,7 @@ section.bottom-menu .toggle {
 
 [type="checkbox"]:checked + div.content .toggle{
     transform: translateX(100%);
-    background-color: #26242E;
+    background-color: #2E293D;
 }
 [type="checkbox"]:checked + div.dark{
         opacity: 1;

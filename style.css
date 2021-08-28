@@ -14,7 +14,7 @@ li{
 
 body{
     --bg-color:#fffefe;
-    --chat-bg:#f7f9fe;
+    --chat-bg:#EEF6FC;
     --text-color: #000;
     --interest-hover:#6d85fa;
     --text-hover: #fff;
@@ -23,11 +23,17 @@ body{
     --logo-color:#000;
     --text-chat-bg: rgba(109, 133, 250,.7);
     --btn-color:#6d84fb;
+    --modal-body:#F3FAFF;
+    --btn-sec:#3A445D;
+    --overlay-bg:#8BC6EC;
+    --btn-grad-l:#4b6cb7;
+    --btn-grad-m:#182848;
+    --btn-grad-r:#4b6cb7;
 }
 
 body.dark-mode{ /*overides the light theme*/
-    --bg-color: #332d43;
-    --chat-bg: rgba(60,54,78,255);
+    --bg-color:#141e30;
+    --chat-bg: #323249;
     --text-color: #fff;
     --interest-hover: rgba(70, 62, 95, 0.8);
     --border-color: rgba(255,255,255,0.3);
@@ -35,10 +41,44 @@ body.dark-mode{ /*overides the light theme*/
     --logo-color:#fff;
     --text-chat-bg:rgba(93, 66, 173, .2);
     --btn-color:#7d5fd9;
+    --modal-body:#564E6C;
+    --btn-sec:#7698B3;
+    --overlay-bg: #3D4B67;
+    --btn-grad-l: #83a4d4;
+    --btn-grad-m: #b6fbff;
+    --btn-grad-r: #83a4d4;
 }
 
 /* base */
+.btn-grad {
+    background-image: linear-gradient(to right, var(--btn-grad-l) 0%, var(--btn-grad-m)  51%, var(--btn-grad-r)  100%);
+}
 
+.btn-grad {
+    margin: 15px 0;
+    padding: 12px 30px;
+    text-align: center;
+    text-transform: uppercase;
+    transition: 0.5s;
+    background-size: 200% auto;
+    color: white;            
+    box-shadow: none;
+    border-radius: 10px;
+    display: block;
+    font-size: 0.8em;
+    letter-spacing: 0.07em;
+}
+
+.btn-grad:hover {
+    background-position: right center; /* change the direction of the change here */
+    color: #fff;
+    text-decoration: none;
+}
+
+body.dark-mode .btn-grad{
+    color: #000;
+}
+         
 body{
     background: var(--bg-color);
     color: var(--text-color);
@@ -52,19 +92,36 @@ html {
   scroll-behavior: smooth;
 }
 
+.modal-content{
+    background: var(--modal-body);
+    color: var(--text-color);
+}
+
+.modal-content .modal-header button{
+    color: var(--text-color);
+}
+
+.modal.show .modal-dialog{
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 #overlay {
-  position: fixed; 
-  display: block; 
-  width: 100%; 
-  height: 100%; 
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: var(--bg-color); 
-  opacity: .98;
-  z-index: 1000; 
-  cursor: pointer; 
+    position: fixed; 
+    display: block; 
+    width: 100%; 
+    height: 100%; 
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--overlay-bg);
+    background-image: linear-gradient(135deg, var(--overlay-bg) 0%, var(--bg-color) 100%);
+    opacity: .98;
+    z-index: 1000; 
+    cursor: pointer; 
 }
 
 #overlay > div.container{
@@ -83,6 +140,18 @@ html {
     border: none;
     border-bottom: 2px solid var(--text-color);
     color: var(--text-color);
+}
+
+#overlay form ::-webkit-input-placeholder { /* Edge */
+  color: var(--text-color);
+}
+
+#overlay form :-ms-input-placeholder { /* Internet Explorer 10-11 */
+  color: var(--text-color);
+}
+
+#overlay form ::placeholder {
+  color: var(--text-color);
 }
 
 #overlay form input:focus{
@@ -118,10 +187,6 @@ p.lead.output{
     display: none;
 }
 
-#overlay form button{
-    margin-top: 10px;
-}
-
 .grid{
     display: grid;
 }
@@ -155,7 +220,17 @@ p {
     outline: none;
     border: none;
     cursor: pointer;
+    box-shadow: none;
     transition: all .15s ease-in;
+}
+
+.btn-secondary{
+    background: var(--btn-sec);
+}
+
+.btn-check:focus+.btn, .btn:focus{
+    box-shadow: none;
+    outline: none;
 }
 
 button.btn-primary:disabled {

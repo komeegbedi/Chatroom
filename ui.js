@@ -140,7 +140,13 @@ const updateUI = () =>{
                                 <h3 class="username">
                                     ${chat.username} 
                                     <span class="time">${
-                                        dateFns.format(chat.sent_at.toDate(), 'HH:mm aa')
+                                        dateFns.format(
+                                            chat.sent_at.toDate(), 
+                                            'HH:mm aa', 
+                                            {
+                                                timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone
+                                            }
+                                        )
                                     }</span>
                                 </h3>
                                 <pre class="usertext">${chat.message}</pre>`;

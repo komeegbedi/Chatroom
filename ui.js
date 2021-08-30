@@ -122,6 +122,10 @@ const modifyChat = () =>{
     });
 }
 
+const updateChatTime = () => {
+
+}
+
 const updateUI = () =>{
     
     
@@ -130,9 +134,15 @@ const updateUI = () =>{
 
         let chatBubble;
        if(changeType === 'added'){
+         
             chatBubble = `
                         <div class="user-chat" id ="${ID}">
-                                <h3 class="username">${chat.username}</h3>
+                                <h3 class="username">
+                                    ${chat.username} 
+                                    <span class="time">${
+                                        dateFns.format(chat.sent_at.toDate(), 'HH:mm aa')
+                                    }</span>
+                                </h3>
                                 <pre class="usertext">${chat.message}</pre>`;
 
         

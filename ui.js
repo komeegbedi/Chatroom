@@ -15,6 +15,7 @@ const loadingGif = document.querySelector('#overlay form button img');
 const regEx = /((?!^\d+$))(?=^[a-zA-Z0-9]{4,10}$).*$/;
 const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified;
 const myModal = new bootstrap.Modal(document.getElementById('staticBackdrop'));
+const burgerBar = document.querySelector('div#nav-icon3');
 
 let chat0bj;
 let deleteID;
@@ -33,9 +34,7 @@ const activateLightMode = () => {
 }
 
 const openMenu = () => {
-
-    const burgerBar = document.querySelector('div#nav-icon3');
-    
+ 
     burgerMenu.addEventListener('click', () => {
         burgerBar.classList.toggle('open');
         menuList.classList.toggle('show');
@@ -174,11 +173,29 @@ const changeRoom = () =>{
         else if (e.target.parentNode.tagName === 'BUTTON'){
             clickedOn = e.target.parentNode;
         }
-        document.querySelector('div.channels button.selected').classList.remove('selected');
-        clickedOn.classList.add('selected');
-        chat0bj.updateRoom(clickedOn.getAttribute('id'));
-        chatArea.innerHTML = '';
-        updateUI();
+
+        if(clickedOn){
+
+            document.querySelector('div.main-chat-area div#overlay').style.display = 'flex';
+            
+            document.querySelector('div.channels button.selected').classList.remove('selected');
+            clickedOn.classList.add('selected');
+
+
+            if (burgerBar.classList.contains('open')) {
+                burgerBar.classList.remove('open');
+                menuList.classList.remove('show');
+            }
+
+            let room = clickedOn.getAttribute('id');
+            chat0bj.updateRoom(room);
+            document.querySelector('section.chat-area h2 span.room-name').innerHTML = `(#${room})`;
+            localStorage.setItem('room', room);
+            chatArea.innerHTML = '';
+            updateUI();
+            document.querySelector('div.main-chat-area div#overlay').style.display = 'none';
+        }
+    
     });
 }
 
@@ -264,6 +281,7 @@ const registerUser = () =>{
                     users.add({ name });
                     chat0bj = new Chat(name, 'general');
                     localStorage.setItem('name', name);
+                    localStorage.setItem('room', 'general');
                     start();
                 }
 
@@ -307,12 +325,15 @@ const main = () => {
     });
 
     let userName = localStorage.getItem('name');
-    if (!userName || !userName.match(regEx)){
+    let lastroom = localStorage.getItem('room');
+    if (!userName || !userName.match(regEx) || !lastroom){
         registerUser();
-      
     }
     else{
-        chat0bj = new Chat(userName, 'general');
+        chat0bj = new Chat(userName, lastroom);
+        document.querySelector('section.chat-area h2 span.room-name').innerHTML = `(#${lastroom})`;
+        document.querySelector('div.channels button.selected').classList.remove('selected');
+        document.querySelector(`div.channels button#${lastroom}`).classList.add('selected');
         start();
     }
 }

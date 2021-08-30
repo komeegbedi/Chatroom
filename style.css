@@ -324,6 +324,11 @@ section.chat-area svg{
     fill: var(--logo-color);
 }
 
+section.chat-area h2 span.room-name{
+    font-size: 0.65em;
+    text-transform: uppercase;
+}
+
 section.chat-area > div:nth-child(2){
     height: 100%;
 }
@@ -336,6 +341,14 @@ div.main-chat-area{
     padding: 20px;
     grid-template-rows: 85% 15%;
 }
+
+div.main-chat-area div#overlay{
+    display: none;
+    justify-content: center;
+    align-content: center;
+    position: absolute;
+}
+
 
 div.user-chat{
     margin-bottom: 15px;
@@ -583,6 +596,11 @@ section.chat-area{
     grid-template-rows: 10% 90%;
 }
 
+div.main-chat-area div#overlay img{
+    height: 70%;
+    width: 70%;
+}
+
 
 /* Small devices (tablets, 768px and up) */
 @media  only screen and (min-width: 768px) { 
@@ -638,6 +656,11 @@ section.chat-area{
 
     section.chat-area{
         height: 70vh;
+    }
+
+    div.main-chat-area div#overlay img{
+        height: unset;
+        width: unset;
     }
 
 }

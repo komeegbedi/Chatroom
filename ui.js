@@ -122,10 +122,6 @@ const modifyChat = () =>{
     });
 }
 
-const updateChatTime = () => {
-
-}
-
 const updateUI = () =>{
     
     
@@ -249,6 +245,18 @@ const start = () =>{
         }
 
         myModal.hide();
+
+        let notification = `
+                 <div class="alert alert-success" role="alert">
+                  Your message was successfully deleted
+                </div>`;
+
+        document.querySelector('section.chat-area.grid > div:nth-child(2)').insertAdjacentHTML("afterbegin", notification);
+
+        setTimeout(() => {
+            document.querySelector('section.chat-area.grid > div:nth-child(2) div.alert-success').remove();
+        },3000);
+
     });
 
     document.querySelector('button#close').addEventListener('click', () => {

@@ -138,7 +138,7 @@ const updateUI = () =>{
                                     <span class="time">${
                                         dateFns.format(
                                             chat.sent_at.toDate(), 
-                                            'HH:mm aa', 
+                                            'h:mm a', 
                                             {
                                                 timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone
                                             }

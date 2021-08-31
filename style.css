@@ -373,6 +373,7 @@ div.user-chat h3.username span.time{
     font-weight: 100;
     font-size: 0.65em;
     margin-left: 10px;
+    text-transform: uppercase;
 }
 
 div.user-chat pre{

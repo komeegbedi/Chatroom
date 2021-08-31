@@ -7,11 +7,11 @@ const chatArea = document.querySelector('div.main-chat-text');
 const isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches;
 const isLightMode = window.matchMedia("(prefers-color-scheme: light)").matches;
 const isNotSpecified = window.matchMedia("(prefers-color-scheme: no-preference)").matches;
-const registerForm = document.querySelector('div#overlay form');
+const registerForm = document.querySelector('div.start-scren#overlay form');
 const users = db.collection('users');
-const userInput = document.querySelector('div#overlay form input');
+const userInput = document.querySelector('div.start-scren#overlay form input');
 const errorOutput = registerForm.querySelector('p.output');
-const loadingGif = document.querySelector('#overlay form button img');
+const loadingGif = document.querySelector('div.start-scren#overlay form button img');
 const regEx = /((?!^\d+$))(?=^[a-zA-Z0-9]{4,10}$).*$/;
 const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified;
 const myModal = new bootstrap.Modal(document.getElementById('staticBackdrop'));
@@ -294,7 +294,7 @@ const start = () =>{
         deleteID = undefined;
     });
 
-    document.querySelector('div#overlay').style.display ="none";
+    document.querySelector('div.start-scren#overlay').style.display ="none";
 
     openMenu();
     modifyChat();

@@ -81,7 +81,9 @@ const modifyChat = () =>{
                 return "";
             });
 
-            let editInput = `<textarea class"edit-input" style="height:${chatText.offsetHeight * 2}px" >${text.trim()}</textarea>`;
+            let editInput = `
+                <textarea class"edit-input" style="height:${chatText.offsetHeight * 2}px" spellcheck="true" autocapitalize="off" autocomplete="off">${text.trim()}</textarea>
+                `;
             let links = parentTag.querySelectorAll('div.modify a');
             parentTag.childNodes[1].insertAdjacentHTML('afterend', editInput);
             chatText.remove();
@@ -159,7 +161,18 @@ const updateUI = () =>{
        if(changeType === 'added'){
 
            let message = detectUrl(chat.message);
-    
+           let fomat;
+
+           if (dateFns.isToday(chat.sent_at.toDate())){
+               format = 'h:mm a';
+           }
+           else if (chat.sent_at.toDate().getFullYear() !== new Date().getFullYear()){
+               format = 'MMM Do, YYYY h:mm a';
+           }
+           else{
+               format = 'ddd, MMM Do h:mm a';
+           }
+          
             chatBubble = `
                         <div class="user-chat" id ="${ID}">
                                 <h3 class="username">
@@ -167,7 +180,7 @@ const updateUI = () =>{
                                     <span class="time">${
                                         dateFns.format(
                                             chat.sent_at.toDate(), 
-                                            'h:mm a', 
+                                            format, 
                                             {
                                                 timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone
                                             }
@@ -377,7 +390,7 @@ const main = () => {
         document.body.classList.toggle('dark-mode');
     });
 
-    
+
     let userName = localStorage.getItem('name');
     let lastroom = localStorage.getItem('room');
     if (!userName || !userName.match(regEx) || !lastroom){

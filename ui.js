@@ -161,7 +161,7 @@ const updateUI = () =>{
        if(changeType === 'added'){
 
            let message = detectUrl(chat.message);
-           let fomat;
+           let format;
 
            if (dateFns.isToday(chat.sent_at.toDate())){
                format = 'h:mm a';

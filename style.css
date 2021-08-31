@@ -380,6 +380,11 @@ div.user-chat p{
     font-size: .82em;
     font-weight: 200;
 }
+
+div.user-chat p a {
+    text-decoration: underline;
+    color: var(--text-color);
+}
 div.user-chat span.edited{
     font-size: .7em;
     opacity: .5;

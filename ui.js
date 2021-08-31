@@ -115,7 +115,7 @@ const modifyChat = () =>{
         else if (e.target.classList.contains('save')){
 
             let newText = parentTag.querySelector('textarea').value.trim();
-            newText = newText.replace(/(?:\r\n|\r|\n)/g, ' <br>')
+            newText = newText.replace(/(?:\r\n|\r|\n)/g, ' <br>');
             let html;
 
             chat0bj.isEdited(parentTag.getAttribute('id')).then(isEdited => {
@@ -152,8 +152,6 @@ const modifyChat = () =>{
 
 const updateUI = () =>{
     
-    
-
     chat0bj.getChats((chat , changeType , ID) =>{
 
         let chatBubble;
@@ -248,7 +246,7 @@ const sendChat = () => {
         e.preventDefault();
 
         if(textArea.value.trim().length !== 0){
-            chat0bj.addNewChat(textArea.value.trim());
+            chat0bj.addNewChat(textArea.value.trim().replace(/<[^>]*>/g ,""));
             chatForm.reset();
             chatForm.querySelector('button').setAttribute('disabled', true);
         }

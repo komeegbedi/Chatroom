@@ -1,45 +1,19 @@
-const checkBox = document.getElementById("switch");
-const burgerMenu = document.querySelector('.burger-menu');
 const menuList = document.querySelector('.interest');
 const chatForm = document.querySelector('div.chat-box form');
 const textArea = chatForm.querySelector('textarea');
 const chatArea = document.querySelector('div.main-chat-text');
-const isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches;
-const isLightMode = window.matchMedia("(prefers-color-scheme: light)").matches;
-const isNotSpecified = window.matchMedia("(prefers-color-scheme: no-preference)").matches;
 const registerForm = document.querySelector('div.start-scren#overlay form');
-const users = db.collection('users');
 const userInput = document.querySelector('div.start-scren#overlay form input');
 const errorOutput = registerForm.querySelector('p.output');
 const loadingGif = document.querySelector('div.start-scren#overlay form button img');
 const regEx = /((?!^\d+$))(?=^[a-zA-Z0-9]{4,10}$).*$/;
-const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified;
 const myModal = new bootstrap.Modal(document.getElementById('staticBackdrop'));
 const burgerBar = document.querySelector('div#nav-icon3');
+const users = db.collection('users');
 
 let chat0bj;
 let deleteID;
 
-const activateDarkMode = () => {
-    document.body.classList.add('dark-mode');
-    checkBox.checked = true;
-}
-
-const activateLightMode = () => {
-
-    if (document.body.classList.contains('dark-mode')) {
-        document.body.classList.remove('dark-mode');
-        checkBox.checked = false;
-    }
-}
-
-const openMenu = () => {
- 
-    burgerMenu.addEventListener('click', () => {
-        burgerBar.classList.toggle('open');
-        menuList.classList.toggle('show');
-    });
-}
 
 const detectUrl = message => {
     let urlRegex = /(((https?:\/\/)|(www\.))[^\s]+)/g;
@@ -307,7 +281,6 @@ const start = () =>{
 
     document.querySelector('div.start-scren#overlay').style.display ="none";
 
-    openMenu();
     modifyChat();
     updateUI();
     sendChat();
@@ -362,50 +335,7 @@ const registerUser = () =>{
     });
 }
 
-const main = () => {
 
-    if (isDarkMode) {
-        activateDarkMode();
-    }
-
-    if (isLightMode) {
-        activateLightMode();
-    }
-
-    if (isNotSpecified || hasNoSupport) {
-
-        console.log('You specified no preference for a color scheme or your browser does not support it. I schedule dark mode during night time.')
-        now = new Date();
-        hour = now.getHours();
-        
-        if (hour < 4 || hour >= 16) {
-            activateDarkMode();
-        }
-    }
-
-    window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", e => e.matches && activateDarkMode());
-    window.matchMedia("(prefers-color-scheme: light)").addEventListener("change", e => e.matches && activateLightMode());
-
-    checkBox.addEventListener('change', function () {
-        document.body.classList.toggle('dark-mode');
-    });
-
-
-    let userName = localStorage.getItem('name');
-    let lastroom = localStorage.getItem('room');
-    if (!userName || !userName.match(regEx) || !lastroom){
-        registerUser();
-    }
-    else{
-        chat0bj = new Chat(userName, lastroom);
-        document.querySelector('section.chat-area h2 span.room-name').innerHTML = `(#${lastroom})`;
-        document.querySelector('div.channels button.selected').classList.remove('selected');
-        document.querySelector(`div.channels button#${lastroom}`).classList.add('selected');
-        start();
-    }
-}
-
-main();
 
 
 

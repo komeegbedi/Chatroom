@@ -114,7 +114,7 @@ const modifyChat = () =>{
 
         else if (e.target.classList.contains('save')){
 
-            let newText = parentTag.querySelector('textarea').value.trim();
+            let newText = parentTag.querySelector('textarea').value.trim().replace(/<[^>]*>/g, ""); // remove any tag the user may typed
             newText = newText.replace(/(?:\r\n|\r|\n)/g, ' <br>');
             let html;
 
@@ -377,6 +377,7 @@ const main = () => {
         document.body.classList.toggle('dark-mode');
     });
 
+    
     let userName = localStorage.getItem('name');
     let lastroom = localStorage.getItem('room');
     if (!userName || !userName.match(regEx) || !lastroom){

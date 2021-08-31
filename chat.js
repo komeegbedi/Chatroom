@@ -18,7 +18,7 @@ class Chat{
 
     async addNewChat(message){
       return await this.chats.add({
-            message: message.replace(/(?:\r\n|\r|\n)/g, '<br>'),
+            message: message.replace(/(?:\r\n|\r|\n)/g, ' <br>'),
             room: this.chatroom,
             username: this.username,
             isEdited: false,
@@ -30,7 +30,7 @@ class Chat{
 
        return  await this.chats.doc(messageID)
                 .update({
-                    message: newMessage.replace(/(?:\r\n|\r|\n)/g, '<br>'),
+                    message: newMessage,
                     isEdited: true
                 })
                 .then(() => {

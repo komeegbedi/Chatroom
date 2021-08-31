@@ -41,6 +41,20 @@ const openMenu = () => {
     });
 }
 
+const detectUrl = message => {
+    let urlRegex = /(((https?:\/\/)|(www\.))[^\s]+)/g;
+
+    message = message.replace(urlRegex, (url) => {
+        let hyperlink = url;
+        if (!hyperlink.match('^https?:\/\/')) {
+            hyperlink = 'http://' + hyperlink;
+        }
+        return `<a href="${hyperlink}" target="_blank" rel="noopener noreferrer">${url}</a>`;
+    });
+
+    return message;
+}
+
 const modifyChat = () =>{
 
     let initalText;
@@ -51,9 +65,22 @@ const modifyChat = () =>{
 
         if (e.target.classList.contains('edit')) {
 
-            let chatText = parentTag.querySelector('pre');
-            let text = chatText.innerHTML.replace(/<[^>]*>/g, "\n");
-            initalText = text;
+            let chatText = parentTag.querySelector('p');
+            
+            initalText = chatText.innerHTML;
+
+            let text = chatText.innerHTML.replace(/<[^>]*>/g, tag => { // find tags in string
+
+                if (tag.match('<br\s*\/?>')){ // if tags are <br>
+                    return "\n";
+                }
+                else if (tag.match(/<a [^>]+>([^<]+)<\/a>/)){ // if tags are anchor tag
+                    return tag.match(/<a [^>]+>([^<]+)<\/a>/)[1];
+                }
+
+                return "";
+            });
+
             let editInput = `<textarea class"edit-input" style="height:${chatText.offsetHeight * 2}px" >${text.trim()}</textarea>`;
             let links = parentTag.querySelectorAll('div.modify a');
             parentTag.childNodes[1].insertAdjacentHTML('afterend', editInput);
@@ -73,7 +100,7 @@ const modifyChat = () =>{
 
         else if (e.target.classList.contains('cancel')) {
 
-            let html = `<pre class="usertext">${initalText}</pre>`;
+            let html = `<p class="usertext">${initalText}</p>`;
             parentTag.childNodes[1].insertAdjacentHTML('afterend', html);
             parentTag.querySelector('textarea').remove();
             let links = parentTag.querySelectorAll('div.modify a');
@@ -88,6 +115,7 @@ const modifyChat = () =>{
         else if (e.target.classList.contains('save')){
 
             let newText = parentTag.querySelector('textarea').value.trim();
+            newText = newText.replace(/(?:\r\n|\r|\n)/g, ' <br>')
             let html;
 
             chat0bj.isEdited(parentTag.getAttribute('id')).then(isEdited => {
@@ -95,13 +123,13 @@ const modifyChat = () =>{
                 if (newText.length !== 0 && newText.localeCompare(initalText) !== 0) {
 
                     chat0bj.updateMessage(newText, parentTag.getAttribute('id'));
-                    html = `<pre class="usertext">${newText}</pre>`;
+                    html = `<p class="usertext">${detectUrl(newText)}</p>`;
 
                     if(!isEdited)
                         html += `<span class="edited">(edited)</span>`;
                 }
                 else {
-                    html = `<pre class="usertext">${initalText}</pre>`;
+                    html = `<p class="usertext">${initalText}</p>`;
                 }
 
                 parentTag.childNodes[1].insertAdjacentHTML('afterend', html);
@@ -129,8 +157,11 @@ const updateUI = () =>{
     chat0bj.getChats((chat , changeType , ID) =>{
 
         let chatBubble;
+      
        if(changeType === 'added'){
-         
+
+           let message = detectUrl(chat.message);
+    
             chatBubble = `
                         <div class="user-chat" id ="${ID}">
                                 <h3 class="username">
@@ -145,7 +176,7 @@ const updateUI = () =>{
                                         )
                                     }</span>
                                 </h3>
-                                <pre class="usertext">${chat.message}</pre>`;
+                                <p class="usertext">${message}</p>`;
 
         
            if (chat.isEdited){

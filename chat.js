@@ -37,12 +37,7 @@ class Chat{
                 .update({
                     message: newMessage,
                     isEdited: true
-                })
-                .then(() => {
-                    console.log("Document successfully updated!");
-                }).catch((error) => {
-                    console.error("Error removing document: ", error);
-                });  
+                }); 
     }
 
     async deleteMessage(messageID){

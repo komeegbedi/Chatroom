@@ -347,7 +347,7 @@ div.main-chat-area{
     position: relative;
     border-radius: 12px;
     padding: 20px;
-    grid-template-rows: 85% 15%;
+    grid-template-rows: 80% 20%;
 }
 
 div.main-chat-area div#overlay{
@@ -355,6 +355,14 @@ div.main-chat-area div#overlay{
     justify-content: center;
     align-content: center;
     position: absolute;
+}
+
+div.main-chat-area p#typing{
+    font-size: 0.7em;
+    color: var(--text-color);
+    opacity: .7;
+    font-style: italic;
+    margin-left: 3.5em;
 }
 
 

@@ -76,6 +76,8 @@ const verifyUser = () =>{
         });
     }   
 
+    userID = ID;
+
     loadingScreen.style.display = "none";
 }
 

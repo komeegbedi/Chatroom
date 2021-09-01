@@ -244,15 +244,65 @@ const sendChat = () => {
 
 const isTyping = () => {
 
+    let timeOut;
     textArea.addEventListener('keyup', () => {
 
-        let timeOut;
         if (textArea.value.trim().length !== 0) {
+
             chatForm.querySelector('button').removeAttribute('disabled');
+            
+            if(!timeOut){
+                users.doc(userID).update({isTyping:true});
+
+                timeOut = setTimeout(() => {
+                    users.doc(userID).update({ isTyping: false });
+                    timeOut = undefined;
+                }, 5000);
+            }
+            else{
+            
+                clearTimeout(timeOut);
+
+                timeOut = setTimeout(() => {
+                    users.doc(userID).update({ isTyping: false });
+                    timeOut = undefined;
+
+                }, 5000);
+            }
         }
         else if (!chatForm.querySelector('button').hasAttribute('disabled')) {
             chatForm.querySelector('button').setAttribute('disabled', true);
         }
+    });
+
+    let usersTyping = [];
+    let typingText = document.querySelector('p#typing');
+    users
+    .where(firebase.firestore.FieldPath.documentId(), '!=', userID)
+    .onSnapshot(snapshot => {
+
+        usersTyping = [];
+        snapshot.docChanges().forEach(change => {
+
+            let data = change.doc.data();
+            if (change.type === 'modified' && data.isTyping) {
+                usersTyping.push(data.name);
+            }
+        });
+
+        if(usersTyping.length >= 3){
+            typingText.innerHTML = 'several people are typing';
+        }
+        else if (usersTyping.length === 2){
+            typingText.innerHTML = `${usersTyping[0]} and ${usersTyping[1]}  is typing`;
+        }
+        else if (usersTyping.length === 1){
+            typingText.innerHTML = `${usersTyping[0]} is typing`;
+        }
+        else{
+            typingText.innerHTML = '';
+        }
+        
     });
 }
 

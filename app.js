@@ -7,6 +7,7 @@ const burgerMenu = document.querySelector('.burger-menu');
 
 const activateDarkMode = () => {
     document.body.classList.add('dark-mode');
+    loadingGif.src = './assest/loading-dark.gif';
     checkBox.checked = true;
 }
 
@@ -16,6 +17,7 @@ const activateLightMode = () => {
         document.body.classList.remove('dark-mode');
         checkBox.checked = false;
     }
+    loadingGif.src = './assest/loading-light.gif';
 }
 
 const openMenu = () => {
@@ -110,7 +112,7 @@ const main = () => {
     if (isLightMode) {
         activateLightMode();
     }
-
+  
     if (isNotSpecified || hasNoSupport) {
 
         console.log('You specified no preference for a color scheme or your browser does not support it. I schedule dark mode during night time.')
@@ -126,7 +128,14 @@ const main = () => {
     window.matchMedia("(prefers-color-scheme: light)").addEventListener("change", e => e.matches && activateLightMode());
 
     checkBox.addEventListener('change', function () {
-        document.body.classList.toggle('dark-mode');
+       
+        console.log(checkBox.checked)
+        if (checkBox.checked) {
+            activateDarkMode();
+        }
+        else {
+            activateLightMode();
+        }
     });
 
     verifyUser();

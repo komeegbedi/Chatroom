@@ -224,7 +224,7 @@ const changeRoom = () =>{
             chatArea.innerHTML = '';
             updateUI();
             document.querySelector('div.main-chat-area div#overlay').style.display = 'none';
-            
+
             if (unsubscribeTypingChanges){
                 unsubscribeTypingChanges();
                 listenToTypingChanges();
@@ -383,7 +383,7 @@ const registerUser = () =>{
             errorOutput.style.display = "block";
         }
         else {
-
+        
             loadingGif.style.display = "inline";
 
             let found = false;

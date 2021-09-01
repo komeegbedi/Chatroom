@@ -11,6 +11,7 @@ class Chat{
         this.chatroom = room;
         this.unsubscribe = null;
         this.chats = db.collection('chats');
+        db.collection('users').doc(this.userID).update({ currentRoom: room });
     }
 
     getUserID(){
@@ -19,6 +20,10 @@ class Chat{
 
     getName(){
         return this.username;
+    }
+
+    getRoom(){
+        return this.chatroom;
     }
 
     async addNewChat(message){
@@ -65,7 +70,7 @@ class Chat{
 
     updateRoom(newRoom){
         this.chatroom = newRoom;
-
+        db.collection('users').doc(this.userID).update({ currentRoom: newRoom });
         if(this.unsubscribe !== null){
             this.unsubscribe();
         }

@@ -282,7 +282,7 @@ const isTyping = () => {
     let usersTyping = [];
     let typingText = document.querySelector('p#typing');
     users
-    .where(firebase.firestore.FieldPath.documentId(), '!=', userID)
+    .where('name' , '!=', chat0bj.getName())
     .onSnapshot(snapshot => {
 
         usersTyping = [];

@@ -13,6 +13,7 @@ const users = db.collection('users');
 
 let chat0bj;
 let deleteID;
+let userID;
 
 
 const detectUrl = message => {
@@ -241,10 +242,11 @@ const sendChat = () => {
     });
 }
 
-const start = () =>{
+const isTyping = () => {
 
     textArea.addEventListener('keyup', () => {
 
+        let timeOut;
         if (textArea.value.trim().length !== 0) {
             chatForm.querySelector('button').removeAttribute('disabled');
         }
@@ -252,6 +254,11 @@ const start = () =>{
             chatForm.querySelector('button').setAttribute('disabled', true);
         }
     });
+}
+
+const start = () =>{
+
+    isTyping();
 
     document.querySelector('button#delete').addEventListener('click' , ()=> {
 
@@ -317,10 +324,18 @@ const registerUser = () =>{
                     errorOutput.style.display = "block";
                 }
                 else {
-                    users.add({ name });
-                    chat0bj = new Chat(name, 'general');
+                    users.add({ 
+                        name,
+                        isTyping: false
+
+                    }).then(docRef => {
+                        userID = docRef.id
+                    });
+
+                    chat0bj = new Chat(name, 'general' , userID);
                     localStorage.setItem('name', name);
                     localStorage.setItem('room', 'general');
+                    localStorage.setItem('ID' , userID);
                     start();
                 }
 
@@ -331,9 +346,9 @@ const registerUser = () =>{
             });
 
         }
-
     });
 }
+
 
 
 

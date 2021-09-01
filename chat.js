@@ -1,12 +1,13 @@
 class Chat{
 
-    constructor(user , room ){
+    constructor(user , room  , id){
 
-        if(typeof user !== 'string' && typeof room !== 'string'){
+        if(typeof user !== 'string' && typeof room !== 'string' && typeof id !== 'string'){
             throw new Error("You must pass in a string for both the user and the room in the chat constructor");
         }
 
         this.username = user;
+        this.userID = id;
         this.chatroom = room;
         this.unsubscribe = null;
         this.chats = db.collection('chats');

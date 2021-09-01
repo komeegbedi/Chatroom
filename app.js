@@ -30,11 +30,13 @@ const verifyUser = () =>{
 
     let userName = localStorage.getItem('name');
     let lastroom = localStorage.getItem('room');
-    if (!userName || !userName.match(regEx) || !lastroom) {
+    let ID = localStorage.getItem('ID');
+    if (!userName || !userName.match(regEx) || !lastroom || !ID) {
         registerUser();
     }
     else {
-        chat0bj = new Chat(userName, lastroom);
+        chat0bj = new Chat(userName, lastroom , ID);
+        userID = ID;
         document.querySelector('section.chat-area h2 span.room-name').innerHTML = `(#${lastroom})`;
         document.querySelector('div.channels button.selected').classList.remove('selected');
         document.querySelector(`div.channels button#${lastroom}`).classList.add('selected');

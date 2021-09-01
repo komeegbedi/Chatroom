@@ -38,6 +38,7 @@ const verifyUser = () =>{
 
     if (!userName || !userName.match(regEx)) {
         registerUser();
+        loadingScreen.style.display = "none";
     }
     else if(!ID){
 
@@ -58,6 +59,7 @@ const verifyUser = () =>{
             else{
                 registerUser();
             }
+            loadingScreen.style.display = "none";
         });
     }
     else{
@@ -73,12 +75,14 @@ const verifyUser = () =>{
                 registerUser();
             }
 
+            loadingScreen.style.display = "none";
+
         });
     }   
 
     userID = ID;
 
-    loadingScreen.style.display = "none";
+    
 }
 
 const logUserIn = (userName , lastroom,  ID ) => {

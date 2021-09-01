@@ -14,6 +14,7 @@ const users = db.collection('users');
 let chat0bj;
 let deleteID;
 let userID;
+let unsubscribeTypingChanges;
 
 
 const detectUrl = message => {
@@ -223,6 +224,11 @@ const changeRoom = () =>{
             chatArea.innerHTML = '';
             updateUI();
             document.querySelector('div.main-chat-area div#overlay').style.display = 'none';
+            
+            if (unsubscribeTypingChanges){
+                unsubscribeTypingChanges();
+                listenToTypingChanges();
+            }
         }
     
     });
@@ -279,9 +285,25 @@ const isTyping = () => {
         }
     });
 
-    let usersTyping = [];
+ 
+    listenToTypingChanges();
+    onbeforeunload = function () {
+        if (!userIsTyping) {
+            return;
+        }
+
+        users.doc(userID).update({ isTyping: false });
+        return "Your changes may not be saved";
+    };
+}
+
+const listenToTypingChanges = () => {
+
+       let usersTyping = [];
     let typingText = document.querySelector('p#typing');
-    users
+
+    unsubscribeTypingChanges = users
+    .where('currentRoom', '==', chat0bj.getRoom())
     .where('name' , '!=', chat0bj.getName())
     .onSnapshot(snapshot => {
 
@@ -308,15 +330,6 @@ const isTyping = () => {
         }
         
     });
-
-    onbeforeunload = function () {
-        if (!userIsTyping) {
-            return;
-        }
-
-        users.doc(userID).update({ isTyping: false });
-        return "Your changes may not be saved";
-    };
 }
 
 const start = () =>{
@@ -390,16 +403,16 @@ const registerUser = () =>{
                     users.add({ 
                         name,
                         isTyping: false
-
                     }).then(docRef => {
-                        userID = docRef.id
-                    });
 
-                    chat0bj = new Chat(name, 'general' , userID);
-                    localStorage.setItem('name', name);
-                    localStorage.setItem('room', 'general');
-                    localStorage.setItem('ID' , userID);
-                    start();
+                        userID = docRef.id;
+                        chat0bj = new Chat(name, 'general', userID);
+                        localStorage.setItem('name', name);
+                        localStorage.setItem('room', 'general');
+                        localStorage.setItem('ID', userID);
+                        start();
+                        
+                    });
                 }
 
                 loadingGif.style.display = "none";

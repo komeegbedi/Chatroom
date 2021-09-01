@@ -13,6 +13,10 @@ class Chat{
         this.chats = db.collection('chats');
     }
 
+    getUserID(){
+        return this.userID;
+    }
+
     getName(){
         return this.username;
     }

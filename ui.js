@@ -286,8 +286,6 @@ const start = () =>{
         deleteID = undefined;
     });
 
-    document.querySelector('div.start-scren#overlay').style.display ="none";
-
     modifyChat();
     updateUI();
     sendChat();
@@ -296,6 +294,8 @@ const start = () =>{
 
 
 const registerUser = () =>{
+
+    document.querySelector('div.start-scren#overlay').style.display = "block";
 
     registerForm.addEventListener('submit', e => {
 
@@ -340,6 +340,7 @@ const registerUser = () =>{
                 }
 
                 loadingGif.style.display = "none";
+                document.querySelector('div.start-scren#overlay').style.display = "none";
 
             }).catch(err => {
                 console.log(err);

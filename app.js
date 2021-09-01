@@ -28,20 +28,69 @@ const openMenu = () => {
 
 const verifyUser = () =>{
 
+    const loadingScreen = document.querySelector('div.loading-screen#overlay');
+
+    loadingScreen.style.display = "block";
+
     let userName = localStorage.getItem('name');
     let lastroom = localStorage.getItem('room');
     let ID = localStorage.getItem('ID');
-    if (!userName || !userName.match(regEx) || !lastroom || !ID) {
+
+    if (!userName || !userName.match(regEx)) {
         registerUser();
     }
-    else {
-        chat0bj = new Chat(userName, lastroom , ID);
-        userID = ID;
-        document.querySelector('section.chat-area h2 span.room-name').innerHTML = `(#${lastroom})`;
-        document.querySelector('div.channels button.selected').classList.remove('selected');
-        document.querySelector(`div.channels button#${lastroom}`).classList.add('selected');
-        start();
+    else if(!ID){
+
+        users.get()
+        .then(snapshot => {
+            let data = snapshot.docs;
+
+            for(let index = 0; index < data.length && !ID; index++){
+                if (data[index].data().name.localeCompare(userName) === 0){
+                    ID = data[index].id;
+                }
+            }
+
+            if(ID){
+                localStorage.setItem('ID' , ID);
+                logUserIn(userName , lastroom , ID);
+            }
+            else{
+                registerUser();
+            }
+        });
     }
+    else{
+
+        users.doc(ID)
+        .get()
+        .then( doc => {
+
+            if(doc.exists){
+                logUserIn(userName, lastroom, ID);
+            }
+            else{
+                registerUser();
+            }
+
+        });
+    }   
+
+    loadingScreen.style.display = "none";
+}
+
+const logUserIn = (userName , lastroom,  ID ) => {
+
+    if (!lastroom) {
+        lastroom = 'general'
+    }
+
+    chat0bj = new Chat(userName, lastroom, ID);
+    userID = ID;
+    document.querySelector('section.chat-area h2 span.room-name').innerHTML = `(#${lastroom})`;
+    document.querySelector('div.channels button.selected').classList.remove('selected');
+    document.querySelector(`div.channels button#${lastroom}`).classList.add('selected');
+    start();
 }
 
 const main = () => {

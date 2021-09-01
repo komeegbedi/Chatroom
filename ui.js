@@ -245,6 +245,7 @@ const sendChat = () => {
 const isTyping = () => {
 
     let timeOut;
+    let userIsTyping = false;
     textArea.addEventListener('keyup', () => {
 
         if (textArea.value.trim().length !== 0) {
@@ -253,10 +254,12 @@ const isTyping = () => {
             
             if(!timeOut){
                 users.doc(userID).update({isTyping:true});
+                userIsTyping = true;
 
                 timeOut = setTimeout(() => {
                     users.doc(userID).update({ isTyping: false });
                     timeOut = undefined;
+                    userIsTyping = false;
                 }, 5000);
             }
             else{
@@ -266,6 +269,7 @@ const isTyping = () => {
                 timeOut = setTimeout(() => {
                     users.doc(userID).update({ isTyping: false });
                     timeOut = undefined;
+                    userIsTyping = false;
 
                 }, 5000);
             }
@@ -304,6 +308,15 @@ const isTyping = () => {
         }
         
     });
+
+    onbeforeunload = function () {
+        if (!userIsTyping) {
+            return;
+        }
+
+        users.doc(userID).update({ isTyping: false });
+        return "Your changes may not be saved";
+    };
 }
 
 const start = () =>{

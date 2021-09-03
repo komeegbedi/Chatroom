@@ -266,7 +266,7 @@ const isTyping = () => {
                     users.doc(userID).update({ isTyping: false });
                     timeOut = undefined;
                     userIsTyping = false;
-                }, 3500);
+                }, 5000);
             }
             else{
             
@@ -277,7 +277,7 @@ const isTyping = () => {
                     timeOut = undefined;
                     userIsTyping = false;
 
-                }, 3500);
+                }, 5000);
             }
         }
         else if (!chatForm.querySelector('button').hasAttribute('disabled')) {

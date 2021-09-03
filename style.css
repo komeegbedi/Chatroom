@@ -395,6 +395,7 @@ div.user-chat h3.username span.time{
 div.user-chat p{
     font-size: .82em;
     font-weight: 200;
+    word-wrap: break-word;
 }
 
 div.user-chat p a {

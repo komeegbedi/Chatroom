@@ -619,6 +619,10 @@ section.interest h2.title{
     margin-top: 50px;
 }
 
+section.chat-area h2 span.room-name{
+    display: block;
+}
+
 section.chat-area{
     height: 100%;
     grid-template-rows: 15% 85%;
@@ -627,12 +631,6 @@ section.chat-area{
 div.main-chat-area div#overlay img{
     height: 70%;
     width: 70%;
-}
-
-
-/* Small devices (tablets, 768px and up) */
-@media  only screen and (min-width: 768px) { 
-
 }
 
 /* Medium devices (desktops, 992px and up) */
@@ -682,6 +680,10 @@ div.main-chat-area div#overlay img{
         margin-top: 0px;
     }
 
+    section.chat-area h2 span.room-name{
+        display: inline-block;
+    }   
+
     section.chat-area{
         height: 70vh;
     }
@@ -690,10 +692,5 @@ div.main-chat-area div#overlay img{
         height: unset;
         width: unset;
     }
-
-}
-
-/* Large devices (large desktops, 1200px and up) */
-@media  only screen and (min-width: 1220px) { 
 
 }

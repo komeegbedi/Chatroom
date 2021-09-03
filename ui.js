@@ -299,7 +299,7 @@ const isTyping = () => {
 
 const listenToTypingChanges = () => {
 
-       let usersTyping = [];
+    let usersTyping = [];
     let typingText = document.querySelector('p#typing');
 
     unsubscribeTypingChanges = users

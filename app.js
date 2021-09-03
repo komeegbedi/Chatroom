@@ -129,7 +129,6 @@ const main = () => {
 
     checkBox.addEventListener('change', function () {
        
-        console.log(checkBox.checked)
         if (checkBox.checked) {
             activateDarkMode();
         }

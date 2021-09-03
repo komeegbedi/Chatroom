@@ -621,7 +621,7 @@ section.interest h2.title{
 
 section.chat-area{
     height: 100%;
-    grid-template-rows: 10% 90%;
+    grid-template-rows: 15% 85%;
 }
 
 div.main-chat-area div#overlay img{

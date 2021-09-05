@@ -13,6 +13,7 @@ Users are also able to choose between light and dark mode. By default it works w
  <img src="mobile-dark.PNG" width="50%" alt="Mobile Version - Dark Mode">  <img src="desktop.PNG" width="50%" alt="Desktop Version - Dark Mode">
  
 **Light mode**
+
  <img src= "mobile-light.PNG" width="50%" alt="Mobile Version - Light Mode">  <img src="desktop-light.PNG " width="50%" alt="Desktop Version - Light Mode">
 
 ## Technologies used

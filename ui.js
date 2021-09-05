@@ -411,12 +411,12 @@ const registerUser = () =>{
                         localStorage.setItem('room', 'general');
                         localStorage.setItem('ID', userID);
                         start();
+                        document.querySelector('div.start-scren#overlay').style.display = "none";
                         
                     });
                 }
 
                 loadingGif.style.display = "none";
-                document.querySelector('div.start-scren#overlay').style.display = "none";
 
             }).catch(err => {
                 console.log(err);

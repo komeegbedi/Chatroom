@@ -36,7 +36,7 @@
 
    **Dark Mode**
 
-   <img src="mobile-dark.PNG" width="50%" alt="Mobile Version - Dark Mode">  <img src="desktop.PNG" width="50%" alt="Desktop Version - Dark Mode">
+   <img src="mobile-dark.PNG" width="30%" alt="Mobile Version - Dark Mode">  <img src="desktop.PNG" width="70%" alt="Desktop Version - Dark Mode">
 
    **Light mode**
 

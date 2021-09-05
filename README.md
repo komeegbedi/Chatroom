@@ -26,7 +26,7 @@
  <img src="login.PNG" alt="Login Screen in Dark Mode">
  
   2. After you choose a valid username, you would be directed to the "#general" room and you can start sending messages. 
-      To select a different room , 
+      To select a different room (You can use the images below for reference), 
       On the mobile version click on the 3 bar at the bottom right corner of the screen 
       On the desktop version, you should see the rooms listed at the left side on the page
 

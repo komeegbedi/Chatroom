@@ -9,10 +9,10 @@ Users are also able to choose between light and dark mode. By default it works w
 ## Images of the chatroom
 
 **Dark Mode**
- ![Mobile Version - Dark Mode](mobile-dark.PNG =250x250)   ![Desktop Version - Dark Mode](desktop.PNG =250x250)
+ <img src="mobile-dark.png" width="50%" alt="Mobile Version - Dark Mode">  <img src="desktop.PNG" width="50%" alt="Desktop Version - Dark Mode">
  
 **Light mode**
-  ![Mobile Version - Light Mode](mobile-light.PNG =250x250)   ![Desktop Version - Dark Mode](desktop-light.PNG =250x250)
+ <img src= "mobile-light.PNG" width="50%" alt="Mobile Version - Light Mode">  <img src="desktop-light.PNG " width="50%" alt="Desktop Version - Light Mode">
 
 ## Technologies used
 

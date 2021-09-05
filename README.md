@@ -40,5 +40,5 @@
 
    **Light mode**
 
-   <img src= "mobile-light.PNG" width="50%" alt="Mobile Version - Light Mode">  <img src="desktop-light.PNG " width="50%" alt="Desktop Version - Light Mode">
+   <img src= "mobile-light.PNG" width="30%" alt="Mobile Version - Light Mode">  <img src="desktop-light.PNG " width="70%" alt="Desktop Version - Light Mode">
 

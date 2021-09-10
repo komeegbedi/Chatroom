@@ -7,7 +7,7 @@ const burgerMenu = document.querySelector('.burger-menu');
 
 const activateDarkMode = () => {
     document.body.classList.add('dark-mode');
-    loadingGif.src = './assest/loading-dark.gif';
+    loadingGif.src = './assets/loading-dark.gif';
     checkBox.checked = true;
 }
 
@@ -17,7 +17,7 @@ const activateLightMode = () => {
         document.body.classList.remove('dark-mode');
         checkBox.checked = false;
     }
-    loadingGif.src = './assest/loading-light.gif';
+    loadingGif.src = './assets/loading-light.gif';
 }
 
 const openMenu = () => {

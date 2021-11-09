@@ -15,8 +15,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
 
+    <!--My css file-->
     <link rel="stylesheet" href="style.css">
-
 </head>
 <body>
 
@@ -59,7 +59,7 @@
        </div>
     </div>
 
-    <!-- chatroom  screen -->
+    <!-- chatarea   screen -->
     <main class="grid">   
 
         <!-- bottom section -->
@@ -125,7 +125,7 @@
 
         </section>
 
-        <!-- Main chatting area-->
+        <!-- Main chatroom-->
         <section class="chat-area grid">
 
             <div class="container">
@@ -163,7 +163,7 @@
         </section>
     </main>
 
-    <!-- Modal -->
+    <!-- Modal(for deeleting messages) -->
     <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
         aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -215,11 +215,10 @@
         const analytics = firebase.analytics();
         const db = firebase.firestore();
     </script>
-    <script src="./../Persistence/chat.js"></script>
-    <script src="./../Persistence/register.js"></script>
-    <script src="./../Business/chatUI.js"></script>
     <script src="./../Business/app.js"></script>
-
+    <script src="./../Persistence/chat.js"></script>
+    <script src="./../Business/chatUI.js"></script>
+    <script src="./../Persistence/login.js"></script>
 
 </body>
 </html>

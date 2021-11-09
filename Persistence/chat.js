@@ -1,9 +1,9 @@
 // This chat class represents a user and all the messages they send   
 // This class is also used to communicate with the database (firebase).
 
-class Chat{
+class Chat {
 
-    constructor(user , room  , id){
+    constructor(user , room  , id) {
 
         if(typeof user !== 'string' && typeof room !== 'string' && typeof id !== 'string'){
             throw new Error("You must pass in a string for both the user and the room in the chat constructor");
@@ -17,18 +17,33 @@ class Chat{
         db.collection('users').doc(this.userID).update({ currentRoom: room });
     }
 
-    getUserID(){
+    //getters 
+    getUserID() {
         return this.userID;
     }
 
-    getName(){
+    getName() { 
         return this.username;
     }
 
-    getRoom(){
+    getRoom() {
         return this.chatroom;
     }
 
+    getChats(callback) {
+        this.unsubscribe =
+            this.chats
+                .where('room', '==', this.chatroom)
+                .orderBy('sent_at')
+                .onSnapshot(snapshot => {
+
+                    snapshot.docChanges().forEach(change => {
+                        callback(change.doc.data(), change.type, change.doc.id);
+                    });
+
+                });
+    }
+    
     async addNewChat(message) {
 
       return await this.chats.add({
@@ -58,20 +73,6 @@ class Chat{
 
     }
 
-    getChats(callback){
-       this.unsubscribe = 
-           this.chats
-               .where('room', '==', this.chatroom)
-               .orderBy('sent_at')
-               .onSnapshot(snapshot => { // get all the changes that happen in the chat document as soon as they happen
-
-                   snapshot.docChanges().forEach(change => {
-                       callback(change.doc.data(), change.type, change.doc.id);
-                   });
-
-               });
-    }
-
     updateRoom(newRoom){
         this.chatroom = newRoom;
 
@@ -82,13 +83,13 @@ class Chat{
     }
 
     async isEdited(messageID){
-        return await this.chats.doc(messageID)
-                    .get().then(doc => {
-                        return doc.data().isEdited;
-                    })
-                    .catch(err =>{
-                        console.log(err);
-                    });
+        return await this.chats.doc(messageID).get()
+        .then(doc => {
+            return doc.data().isEdited;
+        })
+        .catch(err =>{
+            console.log(err);
+        });
     }
 
     //used for debugging 

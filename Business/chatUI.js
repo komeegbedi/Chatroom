@@ -1,18 +1,11 @@
-const menuList = document.querySelector('.interest');
 const chatForm = document.querySelector('div.chat-box form');
 const textArea = chatForm.querySelector('textarea');
 const chatArea = document.querySelector('div.main-chat-text');
-const registerForm = document.querySelector('div.start-scren#overlay form');
-const userInput = document.querySelector('div.start-scren#overlay form input');
-const errorOutput = registerForm.querySelector('p.output');
-const loadingGif = document.querySelector('div.start-scren#overlay form button img');
-const myModal = new bootstrap.Modal(document.getElementById('staticBackdrop'));
-const burgerBar = document.querySelector('div#nav-icon3');
 
-let chat0bj;
 let deleteID;
 let userID;
 let unsubscribeTypingChanges;
+
 
 // This function handles the modification of messages (edit or delete a message)
 const modifyChat = () => {
@@ -221,6 +214,9 @@ const updateUI = () =>{
 
 const changeRoom = () =>{
 
+    const burgerBar = document.querySelector('div#nav-icon3');
+    const menuList = document.querySelector('.interest');
+
     document.querySelector('div.channels').addEventListener('click' , e =>{
         let clickedOn;
 
@@ -275,6 +271,7 @@ const sendChat = () => {
     });
 }
 
+//TODO: create a function in chat.js to handle updating the db when it is time
 const isTyping = () => {
 
     let timeOut;
@@ -293,7 +290,7 @@ const isTyping = () => {
                     users.doc(userID).update({ isTyping: false });
                     timeOut = undefined;
                     userIsTyping = false;
-                }, 5000);
+                }, 3500);
             }
             else{
             
@@ -304,7 +301,7 @@ const isTyping = () => {
                     timeOut = undefined;
                     userIsTyping = false;
 
-                }, 5000);
+                }, 3500);
             }
         }
         else if (!chatForm.querySelector('button').hasAttribute('disabled')) {
@@ -329,8 +326,8 @@ const listenToTypingChanges = () => {
     let usersTyping = [];
     let typingText = document.querySelector('p#typing');
 
-    unsubscribeTypingChanges = users
-    .where('currentRoom', '==', chat0bj.getRoom())
+    unsubscribeTypingChanges = 
+    users.where('currentRoom', '==', chat0bj.getRoom())
     .where('name' , '!=', chat0bj.getName())
     .onSnapshot(snapshot => {
 
@@ -362,9 +359,10 @@ const listenToTypingChanges = () => {
 
 const start = () => {
 
+  
+    const myModal = new bootstrap.Modal(document.getElementById('staticBackdrop'));
+
     isTyping();
-
-
     //TODO: WHY ??
     document.querySelector('button#delete').addEventListener('click', () => {
 

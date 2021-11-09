@@ -1,4 +1,4 @@
-// This file modifies the design(look or feel) of the webpage (i.e dark or light mode, open or close navabar )
+// This file handles mofificataion the design(look or feel) of the webpage (i.e dark or light mode, open or close navabar )
 
 const checkBox = document.getElementById("switch");
 
@@ -47,12 +47,13 @@ const main = () => {
     if (isNotSpecified || hasNoSupport) {
 
         console.log('You specified no preference for a color scheme or your browser does not support it. I schedule dark mode during night time.');
-        now = new Date();
-        hour = now.getHours();
+    
+        let hour = new Date().getHours();
 
         if (hour < 4 || hour >= 16) {
             activateDarkMode();
         }
+        
     }
 
     window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", e => e.matches && activateDarkMode());
@@ -68,8 +69,6 @@ const main = () => {
         }//if-else
 
     });
-
-    //verifyUser();
     openMenu();
 }
 

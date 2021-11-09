@@ -26,6 +26,7 @@
         </div>
     </noscript>
 
+    <!-- Loading screen -->
     <div id="overlay" class="loading-screen">
         <p class="lead text">
             This may take a few minutes to load 
@@ -33,6 +34,7 @@
         </p>
     </div>
 
+    <!-- login  screen -->
     <div class ="start-scren" id="overlay">
        <div class="container">
 
@@ -57,6 +59,7 @@
        </div>
     </div>
 
+    <!-- chatroom  screen -->
     <main class="grid">   
 
         <!-- bottom section -->
@@ -110,7 +113,7 @@
 
                 <button class="btn col-12" id="programming">
                     <img src="./assets/code.svg" alt="Programming icon">
-                    <span class="interest-name">#Programming</span> <!--Fixed mobile bug-->
+                    <span class="interest-name">#Programming</span> 
                 </button>
 
                 <button class="btn col-12" id="work">
@@ -193,7 +196,7 @@
     
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-analytics.js"></script>
-    
+
     <script>
         // Your web app's Firebase configuration
         // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -212,8 +215,11 @@
         const analytics = firebase.analytics();
         const db = firebase.firestore();
     </script>
-    <script src="chat.js"></script>
-    <script src="ui.js"></script>
-    <script src="app.js"></script>
+    <script src="./../Persistence/chat.js"></script>
+    <script src="./../Persistence/register.js"></script>
+    <script src="./../Business/chatUI.js"></script>
+    <script src="./../Business/app.js"></script>
+
+
 </body>
 </html>

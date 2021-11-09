@@ -1,3 +1,6 @@
+// This chat class represents a user and all the messages they send   
+// This class is also used to communicate with the database (firebase).
+
 class Chat{
 
     constructor(user , room  , id){
@@ -26,50 +29,52 @@ class Chat{
         return this.chatroom;
     }
 
-    async addNewChat(message){
+    async addNewChat(message) {
+
       return await this.chats.add({
-            message: message.replace(/(?:\r\n|\r|\n)/g, ' <br>'),
+            message: message.replace(/(?:\r\n|\r|\n)/g, ' <br>'), // this is used to replace "newline" to the <br> tag, in order to be read it exactly the way the user wrote it.
             room: this.chatroom,
             username: this.username,
             isEdited: false,
             sent_at: firebase.firestore.Timestamp.fromDate(new Date()) 
        });
+
     }
 
     async updateMessage(newMessage, messageID){
 
-       return  await this.chats.doc(messageID)
-                .update({
-                    message: newMessage,
-                    isEdited: true
-                }); 
+        return  await this.chats.doc(messageID).update({
+            message: newMessage,
+            isEdited: true
+        }); 
     }
 
     async deleteMessage(messageID){
 
       return await this.chats.doc(messageID).delete()
-            .then(() => {
-               
-            }).catch((error) => {
+           .catch((error) => {
                 console.error("Error removing document: ", error);
             });
 
     }
 
     getChats(callback){
-       this.unsubscribe = this.chats
-                            .where('room' , '==' , this.chatroom)
-                            .orderBy('sent_at')
-                            .onSnapshot(snapshot => {
-                                snapshot.docChanges().forEach(change => {
-                                    callback(change.doc.data(), change.type , change.doc.id);
-                                });
+       this.unsubscribe = 
+           this.chats
+               .where('room', '==', this.chatroom)
+               .orderBy('sent_at')
+               .onSnapshot(snapshot => { // get all the changes that happen in the chat document as soon as they happen
 
-                            });
+                   snapshot.docChanges().forEach(change => {
+                       callback(change.doc.data(), change.type, change.doc.id);
+                   });
+
+               });
     }
 
     updateRoom(newRoom){
         this.chatroom = newRoom;
+
         db.collection('users').doc(this.userID).update({ currentRoom: newRoom });
         if(this.unsubscribe !== null){
             this.unsubscribe();
@@ -86,11 +91,10 @@ class Chat{
                     });
     }
 
+    //used for debugging 
     toString(){
         return this.username + " " + this.chatroom;
     }
-
-   
 }
 
 

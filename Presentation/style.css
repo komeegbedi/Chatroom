@@ -1,4 +1,6 @@
+/*=======================================================================*/
 /* Reset */
+
 body,p,a,ul,li{
     margin: 0;
     padding: 0;
@@ -10,6 +12,7 @@ li{
     list-style-type: none;
 }
 
+/*=======================================================================*/
 /** Color scheme (light-theme as default) **/
 
 body{
@@ -49,6 +52,7 @@ body.dark-mode{ /*overides the light theme*/
     --btn-grad-r: #83a4d4;
 }
 
+/*=======================================================================*/
 /* base */
 .btn-grad {
     background-image: linear-gradient(to right, var(--btn-grad-l) 0%, var(--btn-grad-m)  51%, var(--btn-grad-r)  100%);
@@ -483,7 +487,8 @@ div.main-chat-text::-webkit-scrollbar-thumb {
     background-color: #acacac;
 }
 
-/* mobile style */
+/*=======================================================================*/
+/* MOBILE STYLE */
 
  #overlay form{
     width: 80%;
@@ -634,6 +639,7 @@ div.main-chat-area div#overlay img{
     width: 70%;
 }
 
+/*=======================================================================*/
 /* Medium devices (desktops, 992px and up) */
 @media only screen and (min-width: 992px) { 
 

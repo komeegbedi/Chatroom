@@ -1,13 +1,20 @@
-// This file handles mofificataion the design(look or feel) of the webpage (i.e dark or light mode, open or close navabar )
+//--------------------------------------
+//AUTHOR: KOME EGBEDI
+//PURPOSE: This file handles mofificataion the design(look or feel) of the webpage (i.e dark or light mode, open or close navabar )
+//-----------------------------------
 
 const checkBox = document.getElementById("switch");
 
+
+//=======================================================================
 const activateDarkMode = () => {
     document.body.classList.add('dark-mode');
     loadingGif.src = './.../Presentation/assets/loading-dark.gif';
     checkBox.checked = true;
 }
 
+
+//=======================================================================
 const activateLightMode = () => {
 
     if (document.body.classList.contains('dark-mode')) {
@@ -18,6 +25,8 @@ const activateLightMode = () => {
     loadingGif.src = './.../Presentation/assets/loading-light.gif';
 }
  
+
+//=======================================================================
 const openMenu = () => {
 
     const burgerMenu = document.querySelector('.burger-menu');
@@ -28,6 +37,8 @@ const openMenu = () => {
     });
 }
 
+
+//=======================================================================
 const main = () => {
 
     const isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches;
@@ -53,7 +64,7 @@ const main = () => {
         if (hour < 4 || hour >= 16) {
             activateDarkMode();
         }
-        
+
     }
 
     window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", e => e.matches && activateDarkMode());

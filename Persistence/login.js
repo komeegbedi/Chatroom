@@ -1,12 +1,15 @@
-//This file is responsible for logging the user in 
+//--------------------------------------
+//AUTHOR: KOME EGBEDI
+//PURPOSE: This program handles logging the user in 
+//-----------------------------------
 
 const users = db.collection('users');
 let chat0bj;
 
-//TODO: how login.js interacts with chatUI.js
 
-//This function checks if the user has been registered before (if a user has been registered, their id and username is stored in local storage)
-//if the user has been registered previously, we take them to the previous room they were before and don't show the registration screen
+//=======================================================================
+// This function checks if the user has been registered before (if a user has been registered, their id and username is stored in local storage)
+// if the user has been registered previously, we take them to the previous room they were before and don't show the registration screen
 
 const verifyUser = () => {
 
@@ -21,12 +24,14 @@ const verifyUser = () => {
 
     // if we are unable to find an userName or the user has manipulated their username from the console to not fit the guidelines of the username 
     // we ask them to register again 
-    if (!userName || !userName.match(regEx)) {
+    if (!userName || !userName.match(regEx) ) {
         registerUser();
         loadingScreen.style.display = "none";
     }
-    else if (!ID) { // if we were able to find a userName but no an ID (the user could have deleted it from the console), 
-        // we want to check the db for the ID as usernmes are also unique
+
+    // if we were able to find a userName but no an ID (the user could have deleted it from the console), 
+    // we want to check the db for the ID as usernmes are also unique
+    else if (!ID) { 
 
         users.get().then(snapshot => {
 
@@ -50,11 +55,13 @@ const verifyUser = () => {
             }
 
             loadingScreen.style.display = "none";
-        });
+        });//then()
 
     }
-    else { // if we found all the details (username and ID) , we check if the ID is valid
-        // if not valid, the user will have to register
+
+    // if we found all the details (username and ID) , we check if the ID is valid
+    // if not valid, the user will have to register
+    else { 
 
         users.doc(ID).get().then(doc => {
 
@@ -72,9 +79,11 @@ const verifyUser = () => {
     }//end if-else
 
     userID = ID;
+
 }//verifyUser
 
 
+//=======================================================================
 //This function registers a new user 
 const registerUser = () => {
 
@@ -133,6 +142,7 @@ const registerUser = () => {
                         document.querySelector('div.start-scren#overlay').style.display = "none";
 
                     });
+                    
                 }//if-else
 
                 loadingGif.style.display = "none";
@@ -147,6 +157,8 @@ const registerUser = () => {
 
 }//registerUser()
 
+
+//=======================================================================
 //this function logs the user in after verifying the user
 const logUserIn = (userName, lastroom, ID) => {
 
@@ -160,6 +172,6 @@ const logUserIn = (userName, lastroom, ID) => {
     document.querySelector('div.channels button.selected').classList.remove('selected');
     document.querySelector(`div.channels button#${lastroom}`).classList.add('selected');
     start();
-}
+}//logUserIn()
 
 verifyUser();

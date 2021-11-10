@@ -1,5 +1,7 @@
-// This chat class represents a user and all the messages they send   
-// This class is also used to communicate with the database (firebase).
+//--------------------------------------
+//AUTHOR: KOME EGBEDI
+//PURPOSE:This chat class represents a user and all the messages they send. This class is also used to communicate with the database (firebase).
+//-----------------------------------
 
 class Chat {
 
@@ -43,7 +45,7 @@ class Chat {
 
                 });
     }
-    
+
     async addNewChat(message) {
 
       return await this.chats.add({

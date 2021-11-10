@@ -14,10 +14,13 @@ class Chat {
         this.username = user;
         this.userID = id;
         this.chatroom = room;
-        this.unsubscribe = null;
+
+        this.unsubscribeChatChanges = null;
+        this.unsubscribeTypingChanges = null;
+
         this.chats = db.collection('chats');
         this.currUser = db.collection('users').doc(this.userID);
-        currUser.update({ currentRoom: room });
+        this.currUser.update({ currentRoom: room });
     }
 
     //getters 
@@ -34,7 +37,7 @@ class Chat {
     }
 
     getChats(callback) {
-        this.unsubscribe =
+        this.unsubscribeChatChanges =
             this.chats
                 .where('room', '==', this.chatroom)
                 .orderBy('sent_at')
@@ -59,7 +62,7 @@ class Chat {
 
     }
 
-    async updateMessage(newMessage, messageID){
+    async updateMessage(newMessage, messageID){ 
 
         return  await this.chats.doc(messageID).update({
             message: newMessage,
@@ -80,8 +83,17 @@ class Chat {
         this.chatroom = newRoom;
 
         db.collection('users').doc(this.userID).update({ currentRoom: newRoom });
-        if(this.unsubscribe !== null){
-            this.unsubscribe();
+
+        if (this.unsubscribeChatChanges){
+            this.unsubscribeChatChanges();
+        }
+
+        // update the room we are listening to for who is typing
+        // we are checking if "unsubscribeTypingChanges" variable has a value because if the user has not typed in any room, it will be null 
+        // there is a possibilities of the user just chnaging rooms
+
+        if (this.unsubscribeTypingChanges) {
+            this.unsubscribeTypingChanges();
         }
     }
 
@@ -95,8 +107,29 @@ class Chat {
         });
     }
 
-    async updateIsTyping(value){
+    async setTypingStatus(value){
         this.currUser.update({ isTyping: value });
+    }
+
+    async listenToTypingChanges(updateDisplay) {
+        
+        this.unsubscribeTypingChanges =
+            users.where('currentRoom', '==', this.chatroom)
+                .where('name', '!=', this.username)
+                .onSnapshot(snapshot => {
+
+                    let usersTyping = [];
+                    snapshot.docChanges().forEach(change => {
+
+                        let data = change.doc.data();
+                        if (change.type === 'modified' && data.isTyping) {
+                            usersTyping.push(data.name);
+                        }
+                    });
+
+                    updateDisplay(usersTyping);
+
+                });
     }
 
     //used for debugging 

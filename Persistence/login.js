@@ -4,7 +4,8 @@
 //-----------------------------------
 
 const users = db.collection('users');
-let chat0bj;
+const regEx = /((?!^\d+$))(?=^[a-zA-Z0-9]{4,10}$).*$/; // ensure that the user name does not contain any special characters, 
+                                                         // does not contain only numbers and are between 4-10 characters
 
 
 //=======================================================================
@@ -94,10 +95,6 @@ const registerUser = () => {
 
     document.querySelector('div.start-scren#overlay').style.display = "block"; 
 
-    const regEx = /((?!^\d+$))(?=^[a-zA-Z0-9]{4,10}$).*$/; // ensure that the user name does not contain any special characters, 
-                                                         // does not contain only numbers and are between 4-10 characters
-
-
     registerForm.addEventListener('submit', e => {
 
         e.preventDefault();
@@ -134,11 +131,10 @@ const registerUser = () => {
                     }).then(docRef => {
 
                         userID = docRef.id;
-                        chat0bj = new Chat(name, 'general', userID);
                         localStorage.setItem('name', name);
                         localStorage.setItem('room', 'general');
                         localStorage.setItem('ID', userID);
-                        start();
+                        start(new Chat(name, 'general', userID));
                         document.querySelector('div.start-scren#overlay').style.display = "none";
 
                     });
@@ -166,12 +162,13 @@ const logUserIn = (userName, lastroom, ID) => {
         lastroom = 'general'
     }
 
-    chat0bj = new Chat(userName, lastroom, ID);
+    
     userID = ID;
     document.querySelector('section.chat-area h2 span.room-name').innerHTML = `(#${lastroom})`;
     document.querySelector('div.channels button.selected').classList.remove('selected');
     document.querySelector(`div.channels button#${lastroom}`).classList.add('selected');
-    start();
+    start(new Chat(userName, lastroom, ID));
+    
 }//logUserIn()
 
 verifyUser();

@@ -8,8 +8,7 @@ const textArea = chatForm.querySelector('textarea');
 const chatArea = document.querySelector('div.main-chat-text');
 
 let deleteID; // holds the ID of the message about to be deleted, it only has a value when the user clicks the delete button and goes to undefined after that
-let userID;
-let unsubscribeTypingChanges;
+let chatObj; // holds the chat object created at the start of the program
 
 //=======================================================================
 // This function handles the modification of messages (edit or delete a message)
@@ -66,7 +65,7 @@ const deleteChat = () => {
 
         if (deleteID) { // this should be true most of the time but just to be safe
 
-            chat0bj.deleteMessage(deleteID);
+            chatObj.deleteMessage(deleteID);
             deleteID = undefined;
 
             myModal.hide();
@@ -161,7 +160,7 @@ const saveEditedMessage = (initalText, parent) => {
 
     let html;
 
-    chat0bj.isEdited(parent.getAttribute('id')).then(isEdited => {
+    chatObj.isEdited(parent.getAttribute('id')).then(isEdited => {
 
         /*
             comparing the values between the old and new message here because if we compare the values first before calling the isEdited() function
@@ -173,10 +172,10 @@ const saveEditedMessage = (initalText, parent) => {
 
         if (newText.length !== 0 && newText.localeCompare(initalText) !== 0) {
 
-            chat0bj.updateMessage(newText, parent.getAttribute('id'));
+            chatObj.updateMessage(newText, parent.getAttribute('id'));
             html = `<p class="usertext">${detectUrl(newText)}</p>`;
             
-            //if it hasn't been previously
+            //if it hasn't been edited previously
             if (!isEdited) {
                 html += `<span class="edited">(edited)</span>`;
             }
@@ -189,7 +188,7 @@ const saveEditedMessage = (initalText, parent) => {
         //update the html page
         parent.childNodes[1].insertAdjacentHTML('afterend', html);
         parent.querySelector('textarea').remove();
-        let links = parentTag.querySelectorAll('div.modify a');
+        let links = parent.querySelectorAll('div.modify a');
 
         links[0].innerHTML = 'Edit';
         links[0].setAttribute('class', 'edit');
@@ -258,7 +257,7 @@ const detectUrl = message => {
 //This function updates the UI when ever there is any change with the messages (new messages , edited messages , deleted messages)
 const updateUI = () =>{
     
-    chat0bj.getChats((chat , changeType , ID) =>{
+    chatObj.getChats((chat , changeType , ID) =>{
 
         let chatBubble;
       
@@ -306,7 +305,7 @@ const updateUI = () =>{
             }
             
             //show modification buttons to only the person who sent the chat
-            if(chat.username.localeCompare(chat0bj.getName()) === 0){ 
+            if(chat.username.localeCompare(chatObj.getName()) === 0){ 
 
                   chatBubble +=  `<div class="modify">
                                         <a href="#" class="edit">Edit</a>
@@ -327,6 +326,8 @@ const updateUI = () =>{
        }//if- else if
 
     });//getChats()
+
+    displayUsersTyping();
 }
 
 
@@ -369,9 +370,9 @@ const changeRoom = () =>{
                 menuList.classList.remove('show');
             }//if()
 
-            // upadte the room to listen for new messages
+            // update the room to listen for new messages
             let room = clickedOn.getAttribute('id');
-            chat0bj.updateRoom(room);
+            chatObj.updateRoom(room);
 
             // keeping track of the lastroom the user visited
             document.querySelector('section.chat-area h2 span.room-name').innerHTML = `(#${room})`;
@@ -380,18 +381,12 @@ const changeRoom = () =>{
             //clear the html chats from the previous room and update the chats to the chats of the new room
             chatArea.innerHTML = '';
             updateUI();
+        
 
             //remove loading screen
             document.querySelector('div.main-chat-area div#overlay').style.display = 'none'; 
 
-            // update the room we are listening to for who is typing
-            // we are checking if "unsubscribeTypingChanges" variable has a value because if the user has not typed in any room, it will be null 
-            // there is a possibilities of the user just chnaging rooms
-            if (unsubscribeTypingChanges){
-
-                unsubscribeTypingChanges();
-                listenToTypingChanges();
-            }
+           
         }//if()
     
     });// addEventListener()
@@ -408,7 +403,7 @@ const sendChat = () => {
 
         if(textArea.value.trim().length !== 0) { // want to make sure there is an actual message to be sent 
 
-            chat0bj.addNewChat(textArea.value.trim().replace(/<[^>]*>/g ,"")); // remove an tags the user may have typed 
+            chatObj.addNewChat(textArea.value.trim().replace(/<[^>]*>/g ,"")); // remove an tags the user may have typed 
             chatForm.reset();
             chatForm.querySelector('button').setAttribute('disabled', true);
         }
@@ -417,104 +412,121 @@ const sendChat = () => {
 
 }//sendChat()
 
+
 //=======================================================================
+// This function handles when a user is typing
+// The idea is to put all the load on the front end and not the backend
+// When a key is pressed:
+//     - Check if there's an existing timer - stop it if there is one
+//     - start a timer.
+// When the timer expires, call the server method.
+
 const isTyping = () => {
 
     let timeOut;
     let userIsTyping = false;
+
     textArea.addEventListener('keyup', () => {
 
         if (textArea.value.trim().length !== 0) {
 
             chatForm.querySelector('button').removeAttribute('disabled');
             
-            if(!timeOut){
-                chat0bj.updateIsTyping(true);
+            if(!timeOut) { // if we there isn't a timer
+        
+                chatObj.setTypingStatus(true); //update their status first so it can show on the page
                 userIsTyping = true;
 
+                //once timer expires, call update their status 
                 timeOut = setTimeout(() => {
-                    chat0bj.updateIsTyping(false);
+
+                    chatObj.setTypingStatus(false);
                     timeOut = undefined;
                     userIsTyping = false;
+
                 }, 3500);
+
             }
-            else{
+
+            else{ // if there is a timer
             
-                clearTimeout(timeOut);
+                clearTimeout(timeOut); 
 
                 timeOut = setTimeout(() => {
-                    chat0bj.updateIsTyping(false);
+                    chatObj.setTypingStatus(false);
                     timeOut = undefined;
                     userIsTyping = false;
 
                 }, 3500);
-            }
+
+            }//if-else
+
         }
         else if (!chatForm.querySelector('button').hasAttribute('disabled')) {
+            //keep send button disabled till the user types a character
             chatForm.querySelector('button').setAttribute('disabled', true);
-        }
-    });
 
- 
-    listenToTypingChanges();
+        }//if-else if
+
+    });//addEventListener()
+
+    // If your user reloads or leaves the page is the problem and they were typing. Then they aren't typing, but the timeout won't trigger.
+    // To handle this, I will show an alert letting them know their unfinished message won't be saved and set their typing status to false
+
     onbeforeunload = function () {
         if (!userIsTyping) {
             return;
         }
 
-        chat0bj.updateIsTyping(false);
+        chatObj.setTypingStatus(false);
         return "Your changes may not be saved";
-    };
-}
+    };//onbeforeunload()
+
+}//isTyping()
 
 //=======================================================================
-const listenToTypingChanges = () => {
+// This function displays the users that are typing to the user
+const displayUsersTyping = () => {
 
-    // do all of this when the room changes 
+    chatObj.listenToTypingChanges(usersTyping => {
 
-    let usersTyping = [];
-    let typingText = document.querySelector('p#typing');
+        let typingText = document.querySelector('p#typing');
 
-    unsubscribeTypingChanges = 
-    users.where('currentRoom', '==', chat0bj.getRoom())
-    .where('name' , '!=', chat0bj.getName())
-    .onSnapshot(snapshot => {
 
-        usersTyping = [];
-        snapshot.docChanges().forEach(change => {
-
-            let data = change.doc.data();
-            if (change.type === 'modified' && data.isTyping) {
-                usersTyping.push(data.name);
-            }
-        });
-
-        if(usersTyping.length >= 3){
+        if (usersTyping.length >= 3) {
             typingText.innerHTML = 'several people are typing';
         }
-        else if (usersTyping.length === 2){
+        else if (usersTyping.length === 2) {
             typingText.innerHTML = `${usersTyping[0]} and ${usersTyping[1]}  is typing`;
         }
-        else if (usersTyping.length === 1){
+        else if (usersTyping.length === 1) {
             typingText.innerHTML = `${usersTyping[0]} is typing`;
         }
-        else{
+        else {
             typingText.innerHTML = '';
-        }
-        
-    });
-}
 
+        }//if - else if - else if - else
+
+    });//listenToTypingChanges
+    
+}//displayUsersTyping()
 
 //=======================================================================
 // this function sets up everything after the user has been fully logged in
-const start = () => {
-    isTyping();
+const start = chatroom => {
+
+    if (!chatroom && typeof (chatroom) !== 'object') {
+        throw new Error("You must pass in a chat object in order to run program successfully ");
+    }
+
+    chatObj = chatroom;
+
+    updateUI();
     modifyChat();
     deleteChat();
-    updateUI();
     sendChat();
     changeRoom();
+    isTyping();
 
 }//start()
 

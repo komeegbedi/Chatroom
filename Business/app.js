@@ -4,12 +4,13 @@
 //-----------------------------------
 
 const checkBox = document.getElementById("switch");
+const loadingGif = document.querySelector('div.start-scren#overlay form button img');
 
 
 //=======================================================================
 const activateDarkMode = () => {
     document.body.classList.add('dark-mode');
-    loadingGif.src = './.../Presentation/assets/loading-dark.gif';
+    loadingGif.src = 'assets/loading-dark.gif';
     checkBox.checked = true;
 }
 
@@ -22,7 +23,7 @@ const activateLightMode = () => {
         checkBox.checked = false;
     }
 
-    loadingGif.src = './.../Presentation/assets/loading-light.gif';
+    loadingGif.src = 'assets/loading-light.gif';
 }
  
 
@@ -30,7 +31,9 @@ const activateLightMode = () => {
 const openMenu = () => {
 
     const burgerMenu = document.querySelector('.burger-menu');
-
+    const burgerBar = document.querySelector('div#nav-icon3');
+    const menuList = document.querySelector('.interest');
+    
     burgerMenu.addEventListener('click', () => {
         burgerBar.classList.toggle('open');
         menuList.classList.toggle('show');

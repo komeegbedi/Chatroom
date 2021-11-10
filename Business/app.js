@@ -1,6 +1,6 @@
 //--------------------------------------
-//AUTHOR: KOME EGBEDI
-//PURPOSE: This file handles mofificataion the design(look or feel) of the webpage (i.e dark or light mode, open or close navabar )
+// AUTHOR: KOME EGBEDI
+// PURPOSE: This file handles mofificataion the design(look or feel) of the webpage (i.e dark or light mode, open or close navabar )
 //-----------------------------------
 
 const checkBox = document.getElementById("switch");

@@ -1,6 +1,6 @@
 //--------------------------------------
-//AUTHOR: KOME EGBEDI
-//PURPOSE:This chat class represents a user and all the messages they send. This class is also used to communicate with the database (firebase).
+// AUTHOR: KOME EGBEDI
+// PURPOSE:This chat class represents a user and all the messages they send. This class is also used to communicate with the database (firebase).
 //-----------------------------------
 
 class Chat {
@@ -16,7 +16,8 @@ class Chat {
         this.chatroom = room;
         this.unsubscribe = null;
         this.chats = db.collection('chats');
-        db.collection('users').doc(this.userID).update({ currentRoom: room });
+        this.currUser = db.collection('users').doc(this.userID);
+        currUser.update({ currentRoom: room });
     }
 
     //getters 
@@ -92,6 +93,10 @@ class Chat {
         .catch(err =>{
             console.log(err);
         });
+    }
+
+    async updateIsTyping(value){
+        this.currUser.update({ isTyping: value });
     }
 
     //used for debugging 

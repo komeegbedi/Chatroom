@@ -1,6 +1,6 @@
 //--------------------------------------
-//AUTHOR: KOME EGBEDI
-//PURPOSE: This program handles logging the user in 
+// AUTHOR: KOME EGBEDI
+// PURPOSE: This program handles logging the user in 
 //-----------------------------------
 
 const users = db.collection('users');
@@ -142,7 +142,7 @@ const registerUser = () => {
                         document.querySelector('div.start-scren#overlay').style.display = "none";
 
                     });
-                    
+
                 }//if-else
 
                 loadingGif.style.display = "none";

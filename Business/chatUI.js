@@ -1,6 +1,6 @@
 //--------------------------------------
-//AUTHOR: KOME EGBEDI
-//PURPOSE: This program handles the logic of how the entire chat works 
+// AUTHOR: KOME EGBEDI
+// PURPOSE: This program handles the logic of how the entire chat works 
 //-----------------------------------
 
 const chatForm = document.querySelector('div.chat-box form');
@@ -24,7 +24,7 @@ const modifyChat = () => {
         if (e.target.classList.contains('edit')) { // editing messages 
 
             initalMessage = editMessage(parentTag);
-        }//if 
+        }
 
         else if (e.target.classList.contains('delete')) { // deleting messages
 
@@ -41,7 +41,7 @@ const modifyChat = () => {
             undoMessageEdit(initalMessage, parentTag);
         }
 
-        else if (e.target.classList.contains('save')) { // save editted Mesage
+        else if (e.target.classList.contains('save')) { // save edited Mesage
 
             saveEditedMessage(initalMessage, parentTag);
 
@@ -52,9 +52,12 @@ const modifyChat = () => {
 
 }//modifyChat()
 
+
 //=======================================================================
 //This function does the process of actually deleting a message 
 const deleteChat = () => {
+
+    const myModal = new bootstrap.Modal(document.getElementById('staticBackdrop'));
 
     //this process is done after the user has clicked the "Understood" button on the Modal that pops up 
     // we should already have the ID of the message to be deleted (deleteID)
@@ -62,12 +65,13 @@ const deleteChat = () => {
     document.querySelector('button#delete').addEventListener('click', () => {
 
         if (deleteID) { // this should be true most of the time but just to be safe
+
             chat0bj.deleteMessage(deleteID);
             deleteID = undefined;
 
             myModal.hide();
 
-            //user will get a notification that the message has been deleted
+            //user will get a notification that the message has been deleted that fades away after 3 secs
             let notification = `
                  <div class="alert alert-success" role="alert">
                   Your message was successfully deleted
@@ -91,9 +95,10 @@ const deleteChat = () => {
 
 }//deleteChat()
 
+
 //=======================================================================
 // This function handles the process of editing a message 
-// Parameter is the entire message element trying to be editted
+// Parameter is the entire message element trying to be edited
 // Returns the text in the message before any edit
 const editMessage = chatElement  => {
 
@@ -110,14 +115,14 @@ const editMessage = chatElement  => {
         // there are only two tags we injected which are the <br> tag and the <a> tag 
         // an other tag was added by the user 
 
-        if (tag.match('<br\s*\/?>')) {  //for <br> tags we want to replace that with a newline character 
+        if (tag.match('<br\s*\/?>')) {  //for <br> tags replace that with a newline character 
             return "\n";
         }
-        else if (tag.match(/<a [^>]+>([^<]+)<\/a>/)) { // for <a> tags we just want to display to the user, the text between the tags <a>
+        else if (tag.match(/<a [^>]+>([^<]+)<\/a>/)) { // for <a> tags, show the text between the tags <a>
             return tag.match(/<a [^>]+>([^<]+)<\/a>/)[1];
         }
 
-        return ""; // for another tags we user may have typed in, we want to ignore it and return an empty string
+        return ""; // for any other tags ignore it and replace it with an empty string
 
     }); // end replace 
 
@@ -127,60 +132,85 @@ const editMessage = chatElement  => {
                 <textarea class"edit-input" style="height:${chatText.offsetHeight * 2}px" spellcheck="true" autocapitalize="off" autocomplete="off">${text.trim()}</textarea>
                 `;
 
-    // we want to replace the paragraph with the text area (the text area will be at the position the paragraph being editted was)
-    let links = parent.querySelectorAll('div.modify a');
+    // we want to replace the paragraph with the text area (the text area will be at the position the paragraph being edited was)
+    let links = chatElement.querySelectorAll('div.modify a');
     chatElement.childNodes[1].insertAdjacentHTML('afterend', editInput);
     chatText.remove();
 
     // the modification buttons will also have to be changed as well
     links[0].innerHTML = 'Cancel';
     links[0].setAttribute('class', 'cancel');
+
     links[1].innerHTML = 'Save';
     links[1].setAttribute('class', 'save');
+
     links[1].removeAttribute('data-bs-target');
     links[1].removeAttribute('data-bs-toggle');
 
     return initalText;
-}
+
+}//editMessage()
+
 
 //=======================================================================
+// This function updates a message after it's been edited 
 const saveEditedMessage = (initalText, parent) => {
 
     let newText = parent.querySelector('textarea').value.trim().replace(/<[^>]*>/g, ""); // we want to filter an tag they user may have typed in
     newText = newText.replace(/(?:\r\n|\r|\n)/g, ' <br>');  //replace all new line characters with the <br> tag
 
     let html;
+
     chat0bj.isEdited(parent.getAttribute('id')).then(isEdited => {
+
+        /*
+            comparing the values between the old and new message here because if we compare the values first before calling the isEdited() function
+            i.e.  if(text not the same ){update it in db} else{show the initial text}
+            both conditions need to update the html on the page after executing
+            since the isEdited() is an async and will take some time to finish and actual have a value in the "html" variable
+            when trying update the html on the page, the "html" variable will be undefined 
+        */
 
         if (newText.length !== 0 && newText.localeCompare(initalText) !== 0) {
 
             chat0bj.updateMessage(newText, parent.getAttribute('id'));
             html = `<p class="usertext">${detectUrl(newText)}</p>`;
-
+            
+            //if it hasn't been previously
             if (!isEdited) {
                 html += `<span class="edited">(edited)</span>`;
             }
         }
+
         else {
             html = `<p class="usertext">${initalText}</p>`;
         }
 
+        //update the html page
         parent.childNodes[1].insertAdjacentHTML('afterend', html);
         parent.querySelector('textarea').remove();
         let links = parentTag.querySelectorAll('div.modify a');
+
         links[0].innerHTML = 'Edit';
         links[0].setAttribute('class', 'edit');
+
         links[1].innerHTML = 'Delete';
         links[1].setAttribute('class', 'delete');
+
         links[1].setAttribute('data-bs-target', '#staticBackdrop');
         links[1].setAttribute('data-bs-toggle', 'modal');
 
 
     }).catch(err => console.log(err));
-}
 
+}//saveEditedMessage()
+
+//=======================================================================
+// This function cancels the message edit process
+// This is when a user changes their mind about ending a message 
 
 const undoMessageEdit = (initalText, parent) => {
+
     //replace the textarea tag back to the paragraphy tag
     let html = `<p class="usertext">${initalText}</p>`;
     parent.childNodes[1].insertAdjacentHTML('afterend', html);
@@ -190,11 +220,14 @@ const undoMessageEdit = (initalText, parent) => {
     //the modification buttons will be changed 
     links[0].innerHTML = 'Edit';
     links[0].setAttribute('class', 'edit');
+
     links[1].innerHTML = 'Delete';
     links[1].setAttribute('class', 'delete');
+
     links[1].setAttribute('data-bs-target', '#staticBackdrop');
     links[1].setAttribute('data-bs-toggle', 'modal');
-}
+
+}//undoMessageEdit()
 
 //=======================================================================
 //This function detects URLs in a user's message 
@@ -218,36 +251,42 @@ const detectUrl = message => {
     });
 
     return message;
+
 }//detectUrl()
 
 //=======================================================================
-//This function updates the UI when ever there is any change with the messages (new messages , editted messages , deleted messages)
+//This function updates the UI when ever there is any change with the messages (new messages , edited messages , deleted messages)
 const updateUI = () =>{
     
     chat0bj.getChats((chat , changeType , ID) =>{
 
         let chatBubble;
       
-       if(changeType === 'added'){
+       if(changeType === 'added' ) {
 
            let message = detectUrl(chat.message);
            let format;
 
-           if (dateFns.isToday(chat.sent_at.toDate())){
+           // If the message was sent, display the hour: minute am/pm
+           // if it was sent in a different year, display the Month Day, Year hour: minute am/pm
+           // if it was sent the same year but not today, display the Day of the week, Month date of the month hour: minute am/pm
+           if ( dateFns.isToday(chat.sent_at.toDate()) ){
                format = 'h:mm a';
            }
-           else if (chat.sent_at.toDate().getFullYear() !== new Date().getFullYear()){
+           else if (chat.sent_at.toDate().getFullYear() !== new Date().getFullYear() ){
                format = 'MMM Do, YYYY h:mm a';
            }
            else{
                format = 'ddd, MMM Do h:mm a';
            }
           
+           //create the chat bubble to be displayed 
             chatBubble = `
                         <div class="user-chat" id ="${ID}">
-                                <h3 class="username">
-                                    ${chat.username} 
-                                    <span class="time">${
+                            <h3 class="username">
+                                ${chat.username} 
+                                <span class="time">
+                                    ${
                                         dateFns.format(
                                             chat.sent_at.toDate(), 
                                             format, 
@@ -255,16 +294,19 @@ const updateUI = () =>{
                                                 timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone
                                             }
                                         )
-                                    }</span>
-                                </h3>
-                                <p class="usertext">${message}</p>`;
+                                    }
+                                </span>
+                            </h3>
+                            <p class="usertext">${message}</p>`;
 
         
            if (chat.isEdited){
+
                 chatBubble += `<span class="edited">(edited)</span>`;
             }
             
-            if(chat.username.localeCompare(chat0bj.getName()) === 0){
+            //show modification buttons to only the person who sent the chat
+            if(chat.username.localeCompare(chat0bj.getName()) === 0){ 
 
                   chatBubble +=  `<div class="modify">
                                         <a href="#" class="edit">Edit</a>
@@ -272,84 +314,110 @@ const updateUI = () =>{
                                     </div>`;
             }
 
-            chatBubble += `</div>`;
+            chatBubble += `</div>`; // close the div of the entire chat bubble 
 
             chatArea.innerHTML += chatBubble;
             let newChat = document.getElementById(ID);
             chatArea.scrollTo({ top: newChat.offsetTop , left: newChat.offsetLeft, behavior: 'smooth' });
 
        }
+
        else if (changeType === 'removed'){
            document.getElementById(ID).remove();
-       }
+       }//if- else if
 
-    });
+    });//getChats()
 }
 
 
 //=======================================================================
+// This function handles the switching of rooms 
+// When a user switches a room, wee have to unsubcribe from listening for changes in that room and listen to chnages in the new room
+
 const changeRoom = () =>{
 
     const burgerBar = document.querySelector('div#nav-icon3');
     const menuList = document.querySelector('.interest');
 
     document.querySelector('div.channels').addEventListener('click' , e =>{
-        let clickedOn;
 
-        if (e.target.tagName === 'BUTTON'){
+        let clickedOn;
+        
+        //the button to switch rooms contains an image(svg) and a span tag (for the text)
+        // there is a possible that the user may click the either the image or the span which is still inside the button 
+        // but the event tag is going to return the either the image tag or the span tag that was clicked
+        // we have to check for that as well
+
+        if (e.target.tagName === 'BUTTON') { // when the actual button is clicked
             clickedOn = e.target;
         }
-        else if (e.target.parentNode.tagName === 'BUTTON'){
+        else if (e.target.parentNode.tagName === 'BUTTON') { // either the image or the span tag was clicked 
             clickedOn = e.target.parentNode;
         }
 
-        if(clickedOn){
+        if(clickedOn) {
 
-            document.querySelector('div.main-chat-area div#overlay').style.display = 'flex';
+            document.querySelector('div.main-chat-area div#overlay').style.display = 'flex'; //loading screen to load all the messages in that room
             
             document.querySelector('div.channels button.selected').classList.remove('selected');
             clickedOn.classList.add('selected');
 
-
+            // On mobile or small devices they burger menu will be open when they change a room
+            // need to close it
             if (burgerBar.classList.contains('open')) {
                 burgerBar.classList.remove('open');
                 menuList.classList.remove('show');
-            }
+            }//if()
 
+            // upadte the room to listen for new messages
             let room = clickedOn.getAttribute('id');
             chat0bj.updateRoom(room);
+
+            // keeping track of the lastroom the user visited
             document.querySelector('section.chat-area h2 span.room-name').innerHTML = `(#${room})`;
             localStorage.setItem('room', room);
+
+            //clear the html chats from the previous room and update the chats to the chats of the new room
             chatArea.innerHTML = '';
             updateUI();
-            document.querySelector('div.main-chat-area div#overlay').style.display = 'none';
 
+            //remove loading screen
+            document.querySelector('div.main-chat-area div#overlay').style.display = 'none'; 
+
+            // update the room we are listening to for who is typing
+            // we are checking if "unsubscribeTypingChanges" variable has a value because if the user has not typed in any room, it will be null 
+            // there is a possibilities of the user just chnaging rooms
             if (unsubscribeTypingChanges){
+
                 unsubscribeTypingChanges();
                 listenToTypingChanges();
             }
-        }
+        }//if()
     
-    });
-}
+    });// addEventListener()
+
+}//changeRoom()
 
 //=======================================================================
+// This function handles sending the chat message to the db
 const sendChat = () => {
 
     chatForm.addEventListener('submit', e => {
+
         e.preventDefault();
 
-        if(textArea.value.trim().length !== 0){
-            chat0bj.addNewChat(textArea.value.trim().replace(/<[^>]*>/g ,""));
+        if(textArea.value.trim().length !== 0) { // want to make sure there is an actual message to be sent 
+
+            chat0bj.addNewChat(textArea.value.trim().replace(/<[^>]*>/g ,"")); // remove an tags the user may have typed 
             chatForm.reset();
             chatForm.querySelector('button').setAttribute('disabled', true);
         }
 
-    });
-}
+    });//addEventListener()
+
+}//sendChat()
 
 //=======================================================================
-//TODO: create a function in chat.js to handle updating the db when it is time
 const isTyping = () => {
 
     let timeOut;
@@ -361,11 +429,11 @@ const isTyping = () => {
             chatForm.querySelector('button').removeAttribute('disabled');
             
             if(!timeOut){
-                users.doc(userID).update({isTyping:true});
+                chat0bj.updateIsTyping(true);
                 userIsTyping = true;
 
                 timeOut = setTimeout(() => {
-                    users.doc(userID).update({ isTyping: false });
+                    chat0bj.updateIsTyping(false);
                     timeOut = undefined;
                     userIsTyping = false;
                 }, 3500);
@@ -375,7 +443,7 @@ const isTyping = () => {
                 clearTimeout(timeOut);
 
                 timeOut = setTimeout(() => {
-                    users.doc(userID).update({ isTyping: false });
+                    chat0bj.updateIsTyping(false);
                     timeOut = undefined;
                     userIsTyping = false;
 
@@ -394,13 +462,15 @@ const isTyping = () => {
             return;
         }
 
-        users.doc(userID).update({ isTyping: false });
+        chat0bj.updateIsTyping(false);
         return "Your changes may not be saved";
     };
 }
 
 //=======================================================================
 const listenToTypingChanges = () => {
+
+    // do all of this when the room changes 
 
     let usersTyping = [];
     let typingText = document.querySelector('p#typing');
@@ -436,18 +506,17 @@ const listenToTypingChanges = () => {
 }
 
 
-
 //=======================================================================
+// this function sets up everything after the user has been fully logged in
 const start = () => {
-    const myModal = new bootstrap.Modal(document.getElementById('staticBackdrop'));
-
     isTyping();
     modifyChat();
     deleteChat();
     updateUI();
     sendChat();
     changeRoom();
-}
+
+}//start()
 
 
 

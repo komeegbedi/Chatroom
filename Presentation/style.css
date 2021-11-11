@@ -343,6 +343,17 @@ section.chat-area h2 span.room-name{
 
 section.chat-area > div:nth-child(2){
     height: 100%;
+    position: relative;
+}
+
+.alert {
+    position: absolute;
+    z-index: 10000;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    left: 0; 
+    right: 0; 
+    margin-left: auto; 
+    margin-right: auto;
 }
 
 div.main-chat-area{
@@ -639,6 +650,10 @@ div.main-chat-area div#overlay img{
     width: 70%;
 }
 
+.alert {
+   width: 70%;
+}
+
 /*=======================================================================*/
 /* Medium devices (desktops, 992px and up) */
 @media only screen and (min-width: 992px) { 
@@ -698,6 +713,11 @@ div.main-chat-area div#overlay img{
     div.main-chat-area div#overlay img{
         height: unset;
         width: unset;
+    }
+
+    
+    .alert {
+        width: 50%;
     }
 
 }

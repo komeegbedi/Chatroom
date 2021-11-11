@@ -72,15 +72,24 @@ const deleteChat = () => {
 
             //user will get a notification that the message has been deleted that fades away after 3 secs
             let notification = `
-                 <div class="alert alert-success" role="alert">
-                  Your message was successfully deleted
+                 <div class="alert alert-success animate__animated animate__fadeInDown" role="alert">
+                    Your message was successfully deleted
                 </div>`;
 
             document.querySelector('section.chat-area.grid > div:nth-child(2)').insertAdjacentHTML("afterbegin", notification);
 
+            //remove the notifactaion after 2 secs
+            let deleteNotification = document.querySelector('section.chat-area.grid .alert.alert-success');
             setTimeout(() => {
-                document.querySelector('section.chat-area.grid > div:nth-child(2) div.alert-success').remove();
-            }, 3000);
+
+                deleteNotification.classList.remove('animate__fadeInDown');
+                deleteNotification.classList.add('animate__fadeOutUp');
+
+                deleteNotification.onanimationend = () => {
+                    deleteNotification.remove();
+                };
+
+            }, 2000);
 
         }//if()
 
@@ -254,16 +263,18 @@ const detectUrl = message => {
 }//detectUrl()
 
 //=======================================================================
-//This function updates the UI when ever there is any change with the messages (new messages , edited messages , deleted messages)
+//This function updates the UI when ever there is any change with the messages (new messages , edited messages , deleted messages , updated messages)
 const updateUI = () =>{
     
     chatObj.getChats((chat , changeType , ID) =>{
 
         let chatBubble;
-      
-       if(changeType === 'added' ) {
 
-           let message = detectUrl(chat.message);
+        let message = detectUrl(chat.message);
+      
+        if (changeType === 'added') {
+
+          
            let format;
 
            // If the message was sent, display the hour: minute am/pm
@@ -321,9 +332,22 @@ const updateUI = () =>{
 
        }
 
+        else if (changeType === 'modified'){
+
+            let modifiedText = document.getElementById(ID);
+            modifiedText.querySelector('p').innerHTML = message;
+            
+            if(! modifiedText.querySelector('span.edited') ){
+
+                modifiedText.querySelector('p').insertAdjacentHTML("afterend", `<span class="edited">(edited)</span>`);
+                
+            }//if
+
+        }
+
        else if (changeType === 'removed'){
            document.getElementById(ID).remove();
-       }//if- else if
+       }//if- else if - else if
 
     });//getChats()
 

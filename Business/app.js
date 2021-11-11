@@ -4,7 +4,7 @@
 //-----------------------------------
 
 const checkBox = document.getElementById("switch");
-const loadingGif = document.querySelector('div.start-scren#overlay form button img');
+const loadingGif = document.querySelector('div.login-screen#overlay form button img');
 
 
 //=======================================================================
@@ -64,7 +64,7 @@ const main = () => {
     
         let hour = new Date().getHours();
 
-        if (hour < 4 || hour >= 16) {
+        if (hour < 7 || hour >= 16) {
             activateDarkMode();
         }
 

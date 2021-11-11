@@ -4,7 +4,7 @@
 //-----------------------------------
 
 const users = db.collection('users');
-const regEx = /((?!^\d+$))(?=^[a-zA-Z0-9]{4,10}$).*$/; // ensure that the user name does not contain any special characters, 
+const validUserName = /((?!^\d+$))(?=^[a-zA-Z0-9]{4,10}$).*$/; // ensure that the user name does not contain any special characters, 
                                                          // does not contain only numbers and are between 4-10 characters
 
 
@@ -21,7 +21,7 @@ const verifyUser = () => {
     //get all the stored info in local storage(if there is one)
     let userName = localStorage.getItem('name');
     let lastroom = localStorage.getItem('room');
-    let ID = localStorage.getItem('ID');
+    let userID = localStorage.getItem('ID');
 
     // if we are unable to find an userName or the user has manipulated their username from the console to not fit the guidelines of the username 
     // we ask them to register again 
@@ -29,31 +29,31 @@ const verifyUser = () => {
     // you may notice that " {loadingScreen.style.display = "none"} " is repeated multiple times, that's because  the functions called in the if -else if - else statements 
     // are async functions meaning they will take time to finish executing and I want the loading screen to be there as long there are things loading
 
-    if (!userName || !userName.match(regEx) ) {
+    if (!userName || !userName.match(validUserName) ) {
         registerUser();
         loadingScreen.style.display = "none";
     }
 
     // if we were able to find a userName but no an ID (the user could have deleted it from the console), 
     // we want to check the db for the ID as usernmes are also unique
-    else if (!ID) { 
+    else if (!userID) { 
 
         users.get().then(snapshot => {
 
             let data = snapshot.docs;
 
-            for (let index = 0; index < data.length && !ID; index++) {
+            for (let index = 0; index < data.length && !userID; index++) {
 
                 if (data[index].data().name.localeCompare(userName) === 0) {
-                    ID = data[index].id;
+                    userID = data[index].id;
                 }
             }
 
             //if we found the username, we login the user and save their details
             // else we ask the user to register
-            if (ID) {
-                localStorage.setItem('ID', ID);
-                logUserIn(userName, lastroom, ID);
+            if (userID) {
+                localStorage.setItem('ID', userID);
+                logUserIn(userName, lastroom, userID);
             }
             else {
                 registerUser();
@@ -64,14 +64,14 @@ const verifyUser = () => {
 
     }
 
-    // if we found all the details (username and ID) , we check if the ID is valid
+    // if we found all the details (username and userID) , we check if the userID is valid
     // if not valid, the user will have to register
     else { 
 
-        users.doc(ID).get().then(doc => {
+        users.doc(userID).get().then(doc => {
 
             if (doc.exists) {
-                logUserIn(userName, lastroom, ID);
+                logUserIn(userName, lastroom, userID);
             }
             else {
                 registerUser();
@@ -82,8 +82,6 @@ const verifyUser = () => {
         });//then()
 
     }//end if-else
-
-    userID = ID;
 
 }//verifyUser
 
@@ -105,7 +103,7 @@ const registerUser = () => {
         e.preventDefault();
         let name = userInput.value.trim();
 
-        if (!name.match(regEx)) {
+        if (!name.match(validUserName)) {
 
             errorOutput.innerHTML = "Please follow the guidelines listed below!";
             errorOutput.style.display = "block";
@@ -169,8 +167,6 @@ const logUserIn = (userName, lastroom, ID) => {
         lastroom = 'general'
     }
 
-    
-    userID = ID;
     document.querySelector('section.chat-area h2 span.room-name').innerHTML = `(#${lastroom})`;
     document.querySelector('div.channels button.selected').classList.remove('selected');
     document.querySelector(`div.channels button#${lastroom}`).classList.add('selected');

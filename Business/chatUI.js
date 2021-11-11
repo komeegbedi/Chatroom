@@ -268,26 +268,26 @@ const updateUI = () =>{
     
     chatObj.getChats((chat , changeType , ID) =>{
 
-        let chatBubble;
-
+      
         let message = detectUrl(chat.message);
       
         if (changeType === 'added') {
 
-          
-           let format;
+
+            let timeFormat;
+            let chatBubble;
 
            // If the message was sent, display the hour: minute am/pm
            // if it was sent in a different year, display the Month Day, Year hour: minute am/pm
            // if it was sent the same year but not today, display the Day of the week, Month date of the month hour: minute am/pm
            if ( dateFns.isToday(chat.sent_at.toDate()) ){
-               format = 'h:mm a';
+               timeFormat = 'h:mm a';
            }
            else if (chat.sent_at.toDate().getFullYear() !== new Date().getFullYear() ){
-               format = 'MMM Do, YYYY h:mm a';
+               timeFormat = 'MMM Do, YYYY h:mm a';
            }
            else{
-               format = 'ddd, MMM Do h:mm a';
+               timeFormat = 'ddd, MMM Do h:mm a';
            }
           
            //create the chat bubble to be displayed 
@@ -299,7 +299,7 @@ const updateUI = () =>{
                                     ${
                                         dateFns.format(
                                             chat.sent_at.toDate(), 
-                                            format, 
+                                            timeFormat, 
                                             {
                                                 timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone
                                             }
@@ -410,7 +410,6 @@ const changeRoom = () =>{
             //remove loading screen
             document.querySelector('div.main-chat-area div#overlay').style.display = 'none'; 
 
-           
         }//if()
     
     });// addEventListener()

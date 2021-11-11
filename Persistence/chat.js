@@ -89,11 +89,8 @@ class Chat {
     // This method updates the current room the user is in 
     // we unsubscribe from listening to chat updates (new chats , modified chats, deleted chats) in the old room and start listening in the new room
     // we also unsubscribe from listening to users that were typing in the previous room and start listening in the new room
-    updateRoom(newRoom){
+    async updateRoom(newRoom){
         this.chatroom = newRoom;
-
-        db.collection('users').doc(this.userID).update({ currentRoom: newRoom });
-        
 
         if (this.unsubscribeChatChanges){
             this.unsubscribeChatChanges();
@@ -102,6 +99,8 @@ class Chat {
         if (this.unsubscribeTypingChanges) {
             this.unsubscribeTypingChanges();
         }
+
+        return await db.collection('users').doc(this.userID).update({ currentRoom: newRoom });
     }//updateRoom()
 
 

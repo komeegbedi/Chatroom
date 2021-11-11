@@ -8,8 +8,6 @@ const testChatObj = new Chat("kome", "programming", "xMdkMt2QVY7TQD0Gy3N8");
  //=======================================================================
  // This is test for sending a chat
 async function testAddChat(){
-    
-    let messageID; 
 
     testChatObj.addNewChat("this is a test\nfor sending chats").then(doc => 
 
@@ -30,7 +28,7 @@ async function testUpdateChat(){
         .then(doc => {
 
             console.log("Passed ! - successfully added chat!: ", doc.id);
-            messageID = doc.id;
+            let messageID = doc.id;
 
             //update message
             testChatObj.updateMessage(
@@ -57,7 +55,7 @@ async function testDeleteChat(){
         .then(doc => {
 
             console.log("Passed! - successfully added chat!: ", doc.id);
-            messageID = doc.id;
+            let messageID = doc.id;
 
             //delete message
             testChatObj.deleteMessage(messageID);
@@ -71,7 +69,7 @@ async function testDeleteChat(){
                     console.log("Failed !- document was not deleted");
                 }
 
-            });// testChatObj.chats.doc().get().then()
+            }).catch(err => console.log("there was an error getting that document" , err));// testChatObj.chats.doc().get().then()
 
         }).catch(err =>
 
@@ -85,13 +83,47 @@ async function testDeleteChat(){
  //=======================================================================
  // This is test for updating a room
  async function testRoomUpdate() {
+        testChatObj.updateRoom("general");
 
+    testChatObj.addNewChat("check if the new message went to the new room").then(doc =>{
+
+        //check if the message went to the new room
+         testChatObj.chats.doc(doc.id).get().then(docData => {
+
+             if (docData.data().room === 'general' && testChatObj.getRoom() === 'general') {
+                 console.log("Passed! - room was sucessfully updated and message was sent to new room");
+             }
+             else {
+                 console.log("Failed !- document was not updated and messge was sent to old to room");
+             }
+
+         });// testChatObj.chats.doc().get().then()
+
+    }).catch(err =>
+         console.log("Failed ! there was an error writting to the db", err)
+     );
  }
 
 
  //=======================================================================
- // Have a empty db everytime it was ran
-async function clearAllDocuments(){
+ // all the tests to be ran
+async function Tests() {
+
+
+    testChatObj.getChats((data, changeType, docID) =>
+        console.log("There was an update to a chat document", data, changeType, docID)
+    );
+
+    testAddChat();
+    testUpdateChat();
+    testDeleteChat();
+    testRoomUpdate();
+}
+
+
+ //=======================================================================
+ // Have a empty db everytime it was ran then run all the tests
+async function startTest(){
 
     // there is no formal way to delete all documents in a collection at once 
     // we have to retrieve the documents then delete them one at a time
@@ -106,6 +138,8 @@ async function clearAllDocuments(){
 
             });//forEach()
 
+            //we are done clearing, we can now run all the tests
+            Tests();
         })
         .catch(error => {
             console.log("Error getting documents: ", error);
@@ -114,9 +148,4 @@ async function clearAllDocuments(){
 }//clearAllDocuments()
 
 
-async function runAllTests(){
-    //clearAllDocuments();
-    // testDeleteChat();
-}
-
-runAllTests();
+startTest();

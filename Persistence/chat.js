@@ -15,6 +15,7 @@ class Chat {
         this.userID = id;
         this.chatroom = room;
 
+        //used to unsubscribe from listening to changes on a document 
         this.unsubscribeChatChanges = null;
         this.unsubscribeTypingChanges = null;
 
@@ -23,6 +24,7 @@ class Chat {
         this.currUser.update({ currentRoom: room });
     }
 
+    //=======================================================================
     //getters 
     getUserID() {
         return this.userID;
@@ -36,6 +38,9 @@ class Chat {
         return this.chatroom;
     }
 
+    //=======================================================================
+    // This method is listens for when there in the chat document (new chats, modified chats , deleted chats)
+    // anytime there is a change the callback is called in order to display that change
     getChats(callback) {
         this.unsubscribeChatChanges =
             this.chats
@@ -45,11 +50,12 @@ class Chat {
 
                     snapshot.docChanges().forEach(change => {
                         callback(change.doc.data(), change.type, change.doc.id);
-                    });
+                    });//forEach()
 
-                });
-    }
+                });//onSnapshot()
+    }//getChats()
 
+    //=======================================================================
     async addNewChat(message) {
 
       return await this.chats.add({
@@ -58,10 +64,11 @@ class Chat {
             username: this.username,
             isEdited: false,
             sent_at: firebase.firestore.Timestamp.fromDate(new Date()) 
-       });
+      });//add()
 
-    }
+    }//addNewChat()
 
+    //=======================================================================
     async updateMessage(newMessage, messageID){ 
 
         return  await this.chats.doc(messageID).update({
@@ -70,49 +77,62 @@ class Chat {
         }); 
     }
 
+    //=======================================================================
     async deleteMessage(messageID){
 
       return await this.chats.doc(messageID).delete()
-           .catch((error) => {
-                console.error("Error removing document: ", error);
-            });
+           .catch((error) => console.error("Error removing document: ", error));
 
     }
 
+    //=======================================================================
+    // This method updates the current room the user is in 
+    // we unsubscribe from listening to chat updates (new chats , modified chats, deleted chats) in the old room and start listening in the new room
+    // we also unsubscribe from listening to users that were typing in the previous room and start listening in the new room
     updateRoom(newRoom){
         this.chatroom = newRoom;
 
         db.collection('users').doc(this.userID).update({ currentRoom: newRoom });
+        
 
         if (this.unsubscribeChatChanges){
             this.unsubscribeChatChanges();
         }
 
-        // update the room we are listening to for who is typing
-        // we are checking if "unsubscribeTypingChanges" variable has a value because if the user has not typed in any room, it will be null 
-        // there is a possibilities of the user just chnaging rooms
-
         if (this.unsubscribeTypingChanges) {
             this.unsubscribeTypingChanges();
         }
-    }
+    }//updateRoom()
 
-    async isEdited(messageID){
+
+    //=======================================================================
+    // This function returns a boolean value of if a message has been modified 
+    async isEdited(messageID) {
+
         return await this.chats.doc(messageID).get()
         .then(doc => {
             return doc.data().isEdited;
         })
-        .catch(err =>{
-            console.log(err);
-        });
-    }
+        .catch(err =>console.log(err));
 
+    }//isEdited()
+
+     //=======================================================================
+    // This function updates the typing status of a user
     async setTypingStatus(value){
-        this.currUser.update({ isTyping: value });
-    }
 
+        this.currUser.update({ isTyping: value });
+
+    }//setTypingStatus()
+
+    //=======================================================================
+    // This method is listens for when there is a change in a user isTyping status
+    // Parameter: function that helps display the users that are typing to the frontend
     async listenToTypingChanges(updateDisplay) {
         
+        // this will only listen to changes in the current room the user is currently in 
+        // when a user changes rooms, it is updated to listen to the new room
+
         this.unsubscribeTypingChanges =
             users.where('currentRoom', '==', this.chatroom)
                 .where('name', '!=', this.username)
@@ -122,19 +142,22 @@ class Chat {
                     snapshot.docChanges().forEach(change => {
 
                         let data = change.doc.data();
+                        //we only care about who is currently typing and not who has stopped typing
                         if (change.type === 'modified' && data.isTyping) {
                             usersTyping.push(data.name);
                         }
-                    });
+
+                    });//forEach()
 
                     updateDisplay(usersTyping);
 
-                });
-    }
+                });//onSnapshot()
+    }//listenToTypingChanges()
 
+    //=======================================================================
     //used for debugging 
     toString(){
-        return this.username + " " + this.chatroom;
+        return this.username + " " + this.chatroom + " " + this.userID;
     }
 }
 

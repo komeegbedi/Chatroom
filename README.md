@@ -9,12 +9,31 @@
    You can view the Chat room live here : https://komeegbedi.github.io/Chatroom/
    
    
+## Architecture 
+
+ <img src="GitHub-Images/architecture.jpeg" alt="Architecture Layer used">
+
+  - Presentation
+      - Index.html (in Presenation folder)
+      - style.css
+   - Business
+      - App.js
+         - This handles mofificataion the design(look or feel) of the webpage (i.e dark or light mode, open or close navabar )
+      - ChatUI.js
+         - This  handles the logic of how the entire chat works (sending, deleting, modifying chats, detecting links, see when a using is typing)
+   - Persistences
+      - Chat.js
+         - This chat class represents a user and all the messages they send. This class is also used to communicate with the database (firebase).
+      - Login.js
+         - This program handles logging the user in 
+
 ## Technologies used
 
  - HTML
  - CSS
  - JavaScript
  - Bootstrap
+ - Animate.css
  - Firebase
 
  ##  How to use 

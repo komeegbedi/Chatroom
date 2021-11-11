@@ -23,7 +23,7 @@
  
 
  1. When you visit the website for the first time, you would be promoted with a screen to choose a username. You are to choose a username following the guidelines listed.
- <img src="login.PNG" alt="Login Screen in Dark Mode">
+ <img src="GitHub-Images/login.PNG" alt="Login Screen in Dark Mode">
  
   2. After you choose a valid username, you would be directed to the "#general" room and you can start sending messages. 
   
@@ -36,9 +36,9 @@
 
    **Dark Mode**
 
-   <img src="mobile-dark.PNG" width="30%" alt="Mobile Version - Dark Mode">  <img src="desktop.PNG" width="70%" alt="Desktop Version - Dark Mode">
+   <img src="GitHub-Images/mobile-dark.PNG" width="30%" alt="Mobile Version - Dark Mode">  <img src="GitHub-Images/desktop.PNG" width="70%" alt="Desktop Version - Dark Mode">
 
    **Light mode**
 
-   <img src= "mobile-light.PNG" width="30%" alt="Mobile Version - Light Mode">  <img src="desktop-light.PNG " width="70%" alt="Desktop Version - Light Mode">
+   <img src= "GitHub-Images/mobile-light.PNG" width="30%" alt="Mobile Version - Light Mode">  <img src="GitHub-Images/desktop-light.PNG " width="70%" alt="Desktop Version - Light Mode">
 

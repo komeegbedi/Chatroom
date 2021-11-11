@@ -25,6 +25,10 @@ const verifyUser = () => {
 
     // if we are unable to find an userName or the user has manipulated their username from the console to not fit the guidelines of the username 
     // we ask them to register again 
+
+    // you may notice that " {loadingScreen.style.display = "none"} " is repeated multiple times, that's because  the functions called in the if -else if - else statements 
+    // are async functions meaning they will take time to finish executing and I want the loading screen to be there as long there are things loading
+
     if (!userName || !userName.match(regEx) ) {
         registerUser();
         loadingScreen.style.display = "none";
@@ -88,12 +92,13 @@ const verifyUser = () => {
 //This function registers a new user 
 const registerUser = () => {
 
-    const registerForm = document.querySelector('div.start-scren#overlay form');
+    const registerForm = document.querySelector('div.login-screen form');
     const errorOutput = registerForm.querySelector('p.output');
-    const userInput = document.querySelector('div.start-scren#overlay form input');
-    const loadingGif = document.querySelector('div.start-scren#overlay form button img');
+    const userInput = document.querySelector('div.login-screen form input');
+    const loadingGif = document.querySelector('div.login-screen form button img');
+    const loginScreen = document.querySelector('div.login-screen');
 
-    document.querySelector('div.start-scren#overlay').style.display = "block"; 
+    loginScreen.style.display = "block";
 
     registerForm.addEventListener('submit', e => {
 
@@ -130,12 +135,14 @@ const registerUser = () => {
                         isTyping: false
                     }).then(docRef => {
 
-                        userID = docRef.id;
                         localStorage.setItem('name', name);
                         localStorage.setItem('room', 'general');
-                        localStorage.setItem('ID', userID);
-                        start(new Chat(name, 'general', userID));
-                        document.querySelector('div.start-scren#overlay').style.display = "none";
+                        localStorage.setItem('ID', docRef.id);
+                       
+                        logUserIn(name, 'general', docRef.id);
+
+                        
+                        loginScreen.style.display = "none";
 
                     });
 
@@ -168,7 +175,7 @@ const logUserIn = (userName, lastroom, ID) => {
     document.querySelector('div.channels button.selected').classList.remove('selected');
     document.querySelector(`div.channels button#${lastroom}`).classList.add('selected');
     start(new Chat(userName, lastroom, ID));
-    
+
 }//logUserIn()
 
 verifyUser();

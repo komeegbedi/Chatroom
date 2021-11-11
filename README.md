@@ -11,7 +11,7 @@
    
 ## Architecture 
 
- <img src="GitHub-Images/arhitecture.jpeg" alt="Architecture Layer used">
+ <img src="GitHub-Images/architecture.jpeg.jpeg" alt="Architecture Layer used">
 
   - Presentation
       - Index.html (in Presenation folder)

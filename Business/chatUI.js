@@ -1,6 +1,6 @@
 //--------------------------------------
 // AUTHOR: KOME EGBEDI
-// PURPOSE: This program handles the logic of how the entire chat works 
+// PURPOSE: This program handles the logic of how the entire chat works (sending, deleting, modifying chats, detecting links, see when a using is typing)
 //-----------------------------------
 
 const chatForm = document.querySelector('div.chat-box form');
@@ -340,7 +340,7 @@ const updateUI = () =>{
             if(! modifiedText.querySelector('span.edited') ){
 
                 modifiedText.querySelector('p').insertAdjacentHTML("afterend", `<span class="edited">(edited)</span>`);
-                
+
             }//if
 
         }

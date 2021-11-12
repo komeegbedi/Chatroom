@@ -22,7 +22,7 @@ class Chat {
         this.chats = db.collection('chats');
         this.currUser = db.collection('users').doc(this.userID);
         this.currUser.update({ currentRoom: room });
-    }
+    } 
 
     //=======================================================================
     //getters 

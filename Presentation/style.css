@@ -10,12 +10,12 @@ body,p,a,ul,li{
 
 li{
     list-style-type: none;
-}
+} 
 
 /*=======================================================================*/
 /** Color scheme (light-theme as default) **/
 
-body{
+body{ 
     --bg-color:#fffefe;
     --chat-bg:#EEF6FC;
     --text-color: #000;
